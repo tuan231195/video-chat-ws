@@ -1,0 +1,23 @@
+{
+	"extends": "./node_modules/@vdtn359/base-typescript/tsconfig.json",
+	"exclude": ["**/node_modules", "**/dist"],
+	"compilerOptions": {
+		"module": "esnext",
+		"target": "es2017",
+		"moduleResolution": "node",
+		"noEmit": true
+	},
+	"include": [
+		".eslintrc.cjs",
+		".release-it.cjs",
+		".cz-config.cjs",
+		".monorepolint.config.ts",
+		".monorepolint/templates/.eslintrc.cjs",
+		".monorepolint/templates/.release-it.cjs",
+		".monorepolint/**/*.ts",
+		".monorepolint/**/*.js",
+		"infra/**/*.ts",
+		"scripts/**/*.ts",
+		"scripts/**/*.js"
+	]
+}

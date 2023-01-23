@@ -1,0 +1,44 @@
+{
+	"name": "@vdtn359/websocket-api",
+	"version": "0.0.0",
+	"private": true,
+	"main": "dist/index.js",
+	"scripts": {
+		"test": "jest --passWithNoTests",
+		"tsc": "tsc",
+		"clean": "rm -rf dist",
+		"lint": "eslint . --max-warnings=0",
+		"build": "swc --config-file ../../.swcrc ./src -d dist",
+		"package": "npm run prepare-workspace && npm run docker",
+		"prepare-workspace": "pnpm-isolate-workspace . --src-less-disable --src-less-prod-disable --workspaces-exclude-glob=src --src-files-exclude-glob=src --src-files-enable",
+		"docker": "DOCKER_BUILDKIT=1 docker build -t ${npm_package_config_docker}:${npm_package_version} . && docker tag ${npm_package_config_docker}:${npm_package_version} ${npm_package_config_docker}:latest",
+		"release": "release-it --ci -VV",
+		"plan-release": "release-it --ci --dry-run -VV",
+		"patch": "release-it -i patch --ci -VV",
+		"default": "echo default",
+		"watch": "swc --config-file ../../.swcrc ./src -d dist -w"
+	},
+	"dependencies": {
+		"@aws-sdk/client-apigatewaymanagementapi": "^3.254.0",
+		"@nestjs/common": "^9.2.1",
+		"@nestjs/core": "^9.2.1",
+		"@nestjs/cqrs": "^9.0.1",
+		"@serverless-stack/node": "^1.18.4",
+		"@vdtn359/dynamodb-nestjs-module": "workspace:*",
+		"@vdtn359/nestjs-bootstrap": "^1.0.20",
+		"aws-lambda": "^1.0.7",
+		"class-transformer": "0.4.0",
+		"class-validator": "^0.13.2",
+		"dotenv-flow": "^3.2.0",
+		"json5": "^2.2.3",
+		"lodash": "^4.17.21",
+		"reflect-metadata": "^0.1.13",
+		"uuid": "^9.0.0"
+	},
+	"devDependencies": {
+		"@types/aws-lambda": "^8.10.109",
+		"@types/convict": "^6.1.1",
+		"@types/lodash": "^4.14.191",
+		"@types/uuid": "^9.0.0"
+	}
+}
