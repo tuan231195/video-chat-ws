@@ -19,9 +19,9 @@ export function IndexStack({ stack }: StackContext) {
 
 	const api = new WebSocketApi(stack, 'websocket-api', {
 		routes: {
-			$connect: 'connect.handler',
-			$disconnect: 'disconnect.handler',
-			$default: 'sendMessage.handler',
+			$connect: 'functions/connect.handler',
+			$disconnect: 'functions/disconnect.handler',
+			$default: 'functions/sendMessage.handler',
 		},
 		accessLog: true,
 	});

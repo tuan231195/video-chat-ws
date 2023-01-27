@@ -1,14 +1,15 @@
 {
 	"name": "@vdtn359/dynamodb-nestjs-module",
+	"main": "dist/index.js",
 	"scripts": {
-		"watch": "swc --config-file ../../.swcrc ./src -d dist -w",
+		"watch": "rm -rf dist && swc --config-file ../../.swcrc ./src -d dist -w",
 		"publish-package": "pnpm publish --no-git-checks",
 		"clean": "rm -rf dist",
 		"default": "echo default",
 		"lint": "eslint . --max-warnings=0",
 		"build": "swc --config-file ../../.swcrc ./src -d dist",
 		"test": "jest --passWithNoTests",
-		"tsc": "tsc",
+		"tsc": "rm -rf dist && tsc",
 		"patch": "release-it -i patch --ci -VV",
 		"release": "release-it --ci -VV",
 		"plan-release": "release-it --ci --dry-run -VV"
@@ -27,6 +28,5 @@
 		"@types/lodash": "^4.14.191"
 	},
 	"type": "module",
-	"main": "dist/index.js",
 	"types": "src/index.ts"
 }

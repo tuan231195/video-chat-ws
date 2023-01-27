@@ -1,3 +1,3 @@
 export interface BaseCommand {
-	type: string;
+	action: string;
 }

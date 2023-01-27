@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { AuthenticateCommand } from 'src/modules/websocket/domains';
+import { AuthenticateCommand } from 'src/modules/command/domains';
 import { RequestLogger } from '@vdtn359/nestjs-bootstrap';
 
 @CommandHandler(AuthenticateCommand)

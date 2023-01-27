@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { APIGatewayProxyEvent } from 'aws-lambda';
 import { getApplication } from 'src/app';
 import { RequestLogger } from '@vdtn359/nestjs-bootstrap';
-import { ConnectionRepository } from 'src/modules/websocket/repositories/connection-repository.service';
+import { ConnectionRepository } from 'src/modules/connections/repositories/connection.repository';
 import { handleRequest } from 'src/utils/response';
 
 export const handler = async (event: APIGatewayProxyEvent) => {
@@ -10,9 +10,9 @@ export const handler = async (event: APIGatewayProxyEvent) => {
 
 	return handleRequest(app, event, async () => {
 		const logger = app.get(RequestLogger);
-		logger.info('Connection event', event);
+		logger.info('Disconnection event', event);
 
 		const connectionRepository = app.get(ConnectionRepository);
-		await connectionRepository.createConnection(event.requestContext.connectionId!);
+		await connectionRepository.destroyConnection(event.requestContext.connectionId!);
 	});
 };

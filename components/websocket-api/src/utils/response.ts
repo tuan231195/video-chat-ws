@@ -33,7 +33,7 @@ export function response({ body = { success: true }, statusCode }: { body?: any;
 	};
 }
 
-function error(exception: any) {
+export function error(exception: any) {
 	const httpStatus = exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
 
 	const message = httpStatus === HttpStatus.INTERNAL_SERVER_ERROR ? 'Internal Server Error' : exception.message;
@@ -60,7 +60,7 @@ function error(exception: any) {
 		};
 	});
 
-	return response({ body: { errors }, statusCode: httpStatus });
+	return { errors, status: httpStatus };
 }
 
 export function ok(body: any) {
@@ -73,12 +73,13 @@ export async function handleRequest(
 	handler: () => Promise<any>
 ) {
 	const { connectionId } = event.requestContext;
-	const responseBody = await runInContext(app, { traceId: connectionId }, async () => {
+	const { message, response: responseBody } = await runInContext(app, { traceId: connectionId }, async () => {
 		try {
 			const result = await handler();
-			return ok(result);
+			return { message: result, response: ok(result) };
 		} catch (err: any) {
-			const errorResponse = error(err);
+			const { errors, status } = error(err);
+			const errorResponse = response({ body: { errors }, statusCode: status });
 			const isInternalServerError = errorResponse.statusCode === constants.HTTP_STATUS_INTERNAL_SERVER_ERROR;
 			const logger = app.get(RequestLogger);
 
@@ -87,13 +88,15 @@ export async function handleRequest(
 			logger[logLevel](`Error: ${err.message}`, {
 				err,
 			});
-			return errorResponse;
+			return { response: errorResponse };
 		}
 	});
-	const apiGateway = getApiGateway(event);
-	await apiGateway.postToConnection({
-		ConnectionId: connectionId,
-		Data: Buffer.from(responseBody.body),
-	});
+	if (message) {
+		const apiGateway = getApiGateway(event);
+		await apiGateway.postToConnection({
+			ConnectionId: connectionId,
+			Data: Buffer.from(typeof message === 'object' ? JSON.stringify(message) : message.toString()),
+		});
+	}
 	return responseBody;
 }

@@ -5,7 +5,7 @@
 	"main": "dist/index.js",
 	"scripts": {
 		"test": "jest --passWithNoTests",
-		"tsc": "tsc",
+		"tsc": "rm -rf dist && tsc",
 		"clean": "rm -rf dist",
 		"lint": "eslint . --max-warnings=0",
 		"build": "swc --config-file ../../.swcrc ./src -d dist",
@@ -16,7 +16,7 @@
 		"plan-release": "release-it --ci --dry-run -VV",
 		"patch": "release-it -i patch --ci -VV",
 		"default": "echo default",
-		"watch": "swc --config-file ../../.swcrc ./src -d dist -w"
+		"watch": "rm -rf dist && swc --config-file ../../.swcrc ./src -d dist -w"
 	},
 	"dependencies": {
 		"@aws-sdk/client-apigatewaymanagementapi": "^3.254.0",

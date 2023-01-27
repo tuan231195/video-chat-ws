@@ -3,8 +3,8 @@ import { APIGatewayProxyEvent } from 'aws-lambda';
 import { getApplication } from 'src/app';
 import { RequestLogger } from '@vdtn359/nestjs-bootstrap';
 import Json from 'json5';
-import { handleRequest } from 'src/utils/response';
-import { CommandDispatcher } from 'src/modules/websocket/services';
+import { error, handleRequest } from 'src/utils/response';
+import { CommandDispatcher } from 'src/modules/command/services';
 import { BadRequestException } from '@nestjs/common';
 import { ErrorCodes } from 'src/utils/error-codes';
 
@@ -17,7 +17,7 @@ function tryParse(eventBody: any) {
 	} catch (err) {
 		throw new BadRequestException({
 			message: 'Invalid json message',
-			code: ErrorCodes.INVALID_VALUE,
+			code: ErrorCodes.INVALID_FORMAT,
 		});
 	}
 }
@@ -28,7 +28,28 @@ export const handler = async (event: APIGatewayProxyEvent) => {
 		const logger = app.get(RequestLogger);
 		logger.info('Message event', { eventBody: event.body });
 		const eventBody = tryParse(event.body);
-		const commandDispatcher = app.get(CommandDispatcher);
-		return commandDispatcher.dispatch(eventBody);
+		const action = eventBody?.action;
+		if (!action) {
+			throw new BadRequestException({
+				message: 'Action is required',
+				code: ErrorCodes.VALUE_REQUIRED,
+			});
+		}
+		try {
+			const commandDispatcher = app.get(CommandDispatcher);
+			const dispatchResult = await commandDispatcher.dispatch(eventBody);
+			return {
+				action: `${action}:succeeded`,
+				result: dispatchResult,
+			};
+		} catch (err) {
+			logger.info(`Failed to handle action ${action}`, {
+				err,
+			});
+			return {
+				action: `${action}:failed`,
+				result: error(err),
+			};
+		}
 	});
 };
