@@ -1,11 +1,11 @@
 import 'reflect-metadata';
-import { APIGatewayProxyEvent } from 'aws-lambda';
+import { APIGatewayProxyWithLambdaAuthorizerEvent } from 'aws-lambda';
 import { getApplication } from 'src/app';
 import { RequestLogger } from '@vdtn359/nestjs-bootstrap';
 import { ConnectionRepository } from '../modules/connections/repositories';
 import { handleRequest } from '../utils/response';
 
-export const handler = async (event: APIGatewayProxyEvent) => {
+export const handler = async (event: APIGatewayProxyWithLambdaAuthorizerEvent<any>) => {
 	const app = await getApplication();
 
 	return handleRequest(app, event, async () => {
@@ -13,6 +13,9 @@ export const handler = async (event: APIGatewayProxyEvent) => {
 		logger.info('Connection event', event);
 
 		const connectionRepository = app.get(ConnectionRepository);
-		await connectionRepository.createConnection(event.requestContext.connectionId!);
+		await connectionRepository.createConnection(
+			event.requestContext.connectionId!,
+			event.requestContext.authorizer.principalId
+		);
 	});
 };

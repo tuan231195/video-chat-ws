@@ -73,24 +73,29 @@ export async function handleRequest(
 	handler: () => Promise<any>
 ) {
 	const { connectionId } = event.requestContext;
-	const { message, response: responseBody } = await runInContext(app, { traceId: connectionId }, async () => {
-		try {
-			const result = await handler();
-			return { message: result, response: ok(result) };
-		} catch (err: any) {
-			const { errors, status } = error(err);
-			const errorResponse = response({ body: { errors }, statusCode: status });
-			const isInternalServerError = errorResponse.statusCode === constants.HTTP_STATUS_INTERNAL_SERVER_ERROR;
-			const logger = app.get(RequestLogger);
+	const { principalId } = event.requestContext.authorizer ?? {};
+	const { message, response: responseBody } = await runInContext(
+		app,
+		{ traceId: connectionId, userId: principalId },
+		async () => {
+			try {
+				const result = await handler();
+				return { message: result, response: ok(result) };
+			} catch (err: any) {
+				const { errors, status } = error(err);
+				const errorResponse = response({ body: { errors }, statusCode: status });
+				const isInternalServerError = errorResponse.statusCode === constants.HTTP_STATUS_INTERNAL_SERVER_ERROR;
+				const logger = app.get(RequestLogger);
 
-			const logLevel = isInternalServerError ? 'error' : 'warn';
+				const logLevel = isInternalServerError ? 'error' : 'warn';
 
-			logger[logLevel](`Error: ${err.message}`, {
-				err,
-			});
-			return { response: errorResponse };
+				logger[logLevel](`Error: ${err.message}`, {
+					err,
+				});
+				return { response: errorResponse };
+			}
 		}
-	});
+	);
 	if (message) {
 		const apiGateway = getApiGateway(event);
 		await apiGateway.postToConnection({

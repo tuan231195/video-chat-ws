@@ -15,10 +15,11 @@ export class ConnectionRepository {
 		this.connectionTable = this.config.get('CONNECTIONS_TABLE')!;
 	}
 
-	createConnection(connectionId: string) {
-		this.logger.info(`New connection ${connectionId}`);
+	createConnection(connectionId: string, userId: string) {
+		this.logger.info(`New connection ${connectionId} for user ${userId}`);
 		return this.dynamodbService.putItem(this.connectionTable, {
 			id: connectionId,
+			userId,
 		});
 	}
 

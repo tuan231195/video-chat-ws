@@ -37,6 +37,11 @@ export const config = async () => {
 				nullable: false,
 				default: null,
 			},
+			JWT_SECRET: {
+				format: String,
+				nullable: false,
+				default: null,
+			},
 			...dynamodbConfig,
 		},
 		fetchedConfig
