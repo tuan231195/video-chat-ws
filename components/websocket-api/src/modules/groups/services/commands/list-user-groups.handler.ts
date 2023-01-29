@@ -8,6 +8,13 @@ export class ListUserGroupsHandler implements ICommandHandler<ListUserGroupsComm
 	constructor(private readonly logger: RequestLogger, private readonly groupRepository: GroupRepository) {}
 
 	async execute(command: ListUserGroupsCommand) {
-		return this.groupRepository.getUserGroups(command.userId);
+		const userGroups = await this.groupRepository.getUserGroups(command.userId);
+
+		return Promise.all(
+			userGroups.map(async (userGroup) => ({
+				...userGroup,
+				group: await this.groupRepository.load({ id: userGroup.groupId }),
+			}))
+		);
 	}
 }

@@ -29,6 +29,7 @@
 		"aws-lambda": "^1.0.7",
 		"class-transformer": "0.4.0",
 		"class-validator": "^0.13.2",
+		"dataloader": "^2.1.0",
 		"dotenv-flow": "^3.2.0",
 		"json5": "^2.2.3",
 		"jsonwebtoken": "^9.0.0",

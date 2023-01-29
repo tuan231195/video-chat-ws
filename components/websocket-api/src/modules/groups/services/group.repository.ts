@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { DynamoDbService } from '@vdtn359/dynamodb-nestjs-module';
+import { BaseRepository, DynamoDbService } from '@vdtn359/dynamodb-nestjs-module';
 import { CONFIG_TOKEN, RequestLogger } from '@vdtn359/nestjs-bootstrap';
 import type { Config } from 'src/config';
 import { Group } from 'src/modules/groups/domains';
 import { newId } from 'src/utils/id';
 
 @Injectable()
-export class GroupRepository {
+export class GroupRepository extends BaseRepository {
 	private readonly groupTable: string;
 
 	private readonly groupUsersTable: string;
@@ -16,6 +16,7 @@ export class GroupRepository {
 		@Inject(CONFIG_TOKEN) private readonly config: Config,
 		private readonly logger: RequestLogger
 	) {
+		super(dynamodbService, config.get('GROUPS_TABLE')!, [['id']]);
 		this.groupTable = this.config.get('GROUPS_TABLE')!;
 		this.groupUsersTable = this.config.get('GROUP_USERS_TABLE')!;
 	}
@@ -26,6 +27,7 @@ export class GroupRepository {
 		});
 		return this.dynamodbService.putItem(this.groupTable, {
 			...group,
+			createdAt: new Date(),
 			id: newId(),
 		});
 	}

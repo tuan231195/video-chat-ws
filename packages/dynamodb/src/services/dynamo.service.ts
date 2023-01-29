@@ -40,6 +40,17 @@ export class DynamoDbService {
 		});
 	}
 
+	async batchGet(tableName: string, keys: Record<string, any>[]) {
+		const { Responses } = await this.documentClient.batchGet({
+			RequestItems: {
+				[tableName]: {
+					Keys: keys,
+				},
+			},
+		});
+		return Responses?.[tableName] ?? [];
+	}
+
 	async queryAll({
 		tableName,
 		key: keyObject,
