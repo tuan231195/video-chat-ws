@@ -9,6 +9,9 @@ export default function bootstrap(app: App) {
 			NODE_OPTIONS: '--enable-source-maps',
 		},
 		bundle: {
+			esbuildConfig: {
+				keepNames: true,
+			},
 			format: 'esm',
 			sourcemap: true,
 			externalModules: [

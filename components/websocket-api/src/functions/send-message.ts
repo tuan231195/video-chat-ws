@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { APIGatewayProxyEvent } from 'aws-lambda';
+import { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { getApplication } from 'src/app';
 import { RequestLogger } from '@vdtn359/nestjs-bootstrap';
 import Json from 'json5';
@@ -21,12 +21,12 @@ function tryParse(eventBody: any) {
 		});
 	}
 }
-export const handler = async (event: APIGatewayProxyEvent) => {
+export const handler = async (event: APIGatewayProxyEvent, context: Context) => {
 	const app = await getApplication();
 
-	return handleRequest(app, event, async () => {
+	return handleRequest(app, { event, context }, async () => {
 		const logger = app.get(RequestLogger);
-		logger.info('Message event', { eventBody: event.body });
+		logger.debug('Message event', { event });
 		const eventBody = tryParse(event.body);
 		const action = eventBody?.action;
 		if (!action) {

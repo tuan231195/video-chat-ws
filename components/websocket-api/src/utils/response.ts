@@ -1,7 +1,7 @@
 import { constants } from 'http2';
 import { HttpException, HttpStatus, INestApplicationContext } from '@nestjs/common';
 import { ErrorCodes } from 'src/utils/error-codes';
-import { APIGatewayProxyEvent } from 'aws-lambda';
+import { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { RequestLogger, runInContext } from '@vdtn359/nestjs-bootstrap';
 import { ApiGatewayManagementApi } from '@aws-sdk/client-apigatewaymanagementapi';
 
@@ -69,14 +69,15 @@ export function ok(body: any) {
 
 export async function handleRequest(
 	app: INestApplicationContext,
-	event: APIGatewayProxyEvent,
+	{ event, context }: { event: APIGatewayProxyEvent; context: Context },
 	handler: () => Promise<any>
 ) {
 	const { connectionId } = event.requestContext;
+	const { awsRequestId: requestId } = context;
 	const { principalId } = event.requestContext.authorizer ?? {};
 	const { message, response: responseBody } = await runInContext(
 		app,
-		{ traceId: connectionId, userId: principalId },
+		{ traceId: requestId, context: { userId: principalId, connectionId } },
 		async () => {
 			try {
 				const result = await handler();

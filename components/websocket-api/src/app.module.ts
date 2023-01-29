@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { NestjsBootstrapModule } from '@vdtn359/nestjs-bootstrap';
 import { DynamoModule } from '@vdtn359/dynamodb-nestjs-module';
 import { CommandModule } from 'src/modules/command/command.module';
+import { GroupModule } from 'src/modules/groups/group.module';
 import { ConnectionModule } from './modules/connections/connection.module';
 import { config } from './config';
 
@@ -13,6 +14,6 @@ const { version } = require('../package.json');
 		name: 'websocket-api',
 		config,
 	},
-	imports: [DynamoModule, ConnectionModule, CommandModule],
+	imports: [DynamoModule, ConnectionModule, CommandModule, GroupModule],
 })
 export class AppModule {}

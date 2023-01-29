@@ -37,6 +37,16 @@ export const config = async () => {
 				nullable: false,
 				default: null,
 			},
+			GROUPS_TABLE: {
+				format: String,
+				nullable: false,
+				default: null,
+			},
+			GROUP_USERS_TABLE: {
+				format: String,
+				nullable: false,
+				default: null,
+			},
 			JWT_SECRET: {
 				format: String,
 				nullable: false,

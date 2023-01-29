@@ -92,7 +92,7 @@ importers:
             '@types/lodash': ^4.14.191
             '@types/uuid': ^9.0.0
             '@vdtn359/dynamodb-nestjs-module': workspace:*
-            '@vdtn359/nestjs-bootstrap': ^1.0.20
+            '@vdtn359/nestjs-bootstrap': ^1.0.22
             aws-lambda: ^1.0.7
             class-transformer: 0.4.0
             class-validator: ^0.13.2
@@ -100,6 +100,7 @@ importers:
             json5: ^2.2.3
             jsonwebtoken: ^9.0.0
             lodash: ^4.17.21
+            nanoid: ^4.0.0
             reflect-metadata: ^0.1.13
             uuid: ^9.0.0
         dependencies:
@@ -109,7 +110,7 @@ importers:
             '@nestjs/cqrs': 9.0.1_5jpsbfbll2knk5qgjb5qqh7xhu
             '@serverless-stack/node': 1.18.4
             '@vdtn359/dynamodb-nestjs-module': link:../../packages/dynamodb
-            '@vdtn359/nestjs-bootstrap': 1.0.20_dntc3uqqknzoduyjojusds5kla
+            '@vdtn359/nestjs-bootstrap': 1.0.22_dntc3uqqknzoduyjojusds5kla
             aws-lambda: 1.0.7
             class-transformer: 0.4.0
             class-validator: 0.13.2
@@ -117,6 +118,7 @@ importers:
             json5: 2.2.3
             jsonwebtoken: 9.0.0
             lodash: 4.17.21
+            nanoid: 4.0.0
             reflect-metadata: 0.1.13
             uuid: 9.0.0
         devDependencies:
@@ -133,13 +135,13 @@ importers:
             '@nestjs/common': ^9.2.1
             '@types/convict': ^6.1.1
             '@types/lodash': ^4.14.191
-            '@vdtn359/nestjs-bootstrap': ^1.0.20
+            '@vdtn359/nestjs-bootstrap': ^1.0.22
             lodash: ^4.17.21
         dependencies:
             '@aws-sdk/client-dynamodb': 3.254.0
             '@aws-sdk/lib-dynamodb': 3.254.0_3mhwqyitfuvmr3q3s4ijtjo76m
             '@nestjs/common': 9.2.1_j5hagqx4mwzscud4kyjdvubauy
-            '@vdtn359/nestjs-bootstrap': 1.0.20_dntc3uqqknzoduyjojusds5kla
+            '@vdtn359/nestjs-bootstrap': 1.0.22_dntc3uqqknzoduyjojusds5kla
             lodash: 4.17.21
         devDependencies:
             '@types/convict': 6.1.1
@@ -6903,10 +6905,10 @@ packages:
             jest: 28.1.3_@types+node@18.7.6
         dev: true
 
-    /@vdtn359/nestjs-bootstrap/1.0.20_dntc3uqqknzoduyjojusds5kla:
+    /@vdtn359/nestjs-bootstrap/1.0.22_dntc3uqqknzoduyjojusds5kla:
         resolution:
             {
-                integrity: sha512-qHB4SzJ+o1aejGu0tVq8DYPvd2DgNPU4g+fZHZpXPhzdSRNyVCDX2zvjco74WeTfgCnT5KSP5FTiO1qzkA37Kw==,
+                integrity: sha512-KnGiNiZ0y0IPVop3hVJaWwrEa5ula0+Kfq5mCvqSFNYunKL8kFwc0miQ0/8Bgh+wirHpc5sy2LPPJQBZ5lUJ5g==,
             }
         peerDependencies:
             '@nestjs/common': ^9.2.1
@@ -14559,6 +14561,15 @@ packages:
                 integrity: sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==,
             }
         dev: true
+
+    /nanoid/4.0.0:
+        resolution:
+            {
+                integrity: sha512-IgBP8piMxe/gf73RTQx7hmnhwz0aaEXYakvqZyE302IXW3HyVNhdNGC+O2MwMAVhLEnvXlvKtGbtJf6wvHihCg==,
+            }
+        engines: { node: ^14 || ^16 || >=18 }
+        hasBin: true
+        dev: false
 
     /natural-compare/1.4.0:
         resolution:
