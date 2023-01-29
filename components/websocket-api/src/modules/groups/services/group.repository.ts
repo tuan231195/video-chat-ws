@@ -3,6 +3,7 @@ import { DynamoDbService } from '@vdtn359/dynamodb-nestjs-module';
 import { CONFIG_TOKEN, RequestLogger } from '@vdtn359/nestjs-bootstrap';
 import type { Config } from 'src/config';
 import { Group } from 'src/modules/groups/domains';
+import { newId } from 'src/utils/id';
 
 @Injectable()
 export class GroupRepository {
@@ -23,7 +24,19 @@ export class GroupRepository {
 		this.logger.info(`New group`, {
 			group,
 		});
-		return this.dynamodbService.putItem(this.groupTable, group);
+		return this.dynamodbService.putItem(this.groupTable, {
+			...group,
+			id: newId(),
+		});
+	}
+
+	getGroupUsers(groupId: string) {
+		return this.dynamodbService.queryAll({
+			tableName: this.groupUsersTable,
+			key: {
+				groupId,
+			},
+		});
 	}
 
 	joinGroup(groupId: string, userId: string, connectionId: string) {
@@ -50,6 +63,16 @@ export class GroupRepository {
 
 		return this.dynamodbService.destroyItem(this.groupTable, {
 			id: groupId,
+		});
+	}
+
+	getUserGroups(userId: string) {
+		return this.dynamodbService.queryAll({
+			tableName: this.groupUsersTable,
+			key: {
+				userId,
+			},
+			indexName: 'user_id_index',
 		});
 	}
 }

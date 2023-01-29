@@ -1,5 +1,5 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
+import { DynamoDBDocument, QueryCommandOutput } from '@aws-sdk/lib-dynamodb';
 import { chunk } from 'lodash';
 import { Inject, Injectable } from '@nestjs/common';
 import { CONFIG_TOKEN } from '@vdtn359/nestjs-bootstrap';
@@ -37,6 +37,73 @@ export class DynamoDbService {
 		await this.documentClient.delete({
 			TableName: tableName,
 			Key: key,
+		});
+	}
+
+	async queryAll({
+		tableName,
+		key: keyObject,
+		indexName,
+	}: {
+		tableName: string;
+		key: Record<string, string | number>;
+		indexName?: string;
+	}) {
+		let lastEvaluatedKey = null;
+		const allItems: any[] = [];
+		do {
+			// eslint-disable-next-line no-await-in-loop
+			const result: QueryCommandOutput = await this.query({
+				tableName,
+				key: keyObject,
+				indexName,
+				...(lastEvaluatedKey && { lastEvaluatedKey }),
+			});
+			lastEvaluatedKey = result.LastEvaluatedKey;
+			allItems.push(...(result.Items || []));
+		} while (lastEvaluatedKey);
+
+		return allItems;
+	}
+
+	query({
+		tableName,
+		key: keyObject,
+		indexName,
+		limit,
+		lastEvaluatedKey,
+	}: {
+		tableName: string;
+		key: Record<string, string | number>;
+		indexName?: string;
+		limit?: number;
+		lastEvaluatedKey?: Record<string, any>;
+	}) {
+		const keys = Object.keys(keyObject);
+		const expressionAttributesValues = keys.reduce(
+			(agg, key) => ({
+				...agg,
+				[`:${key}`]: keyObject[key],
+			}),
+			{}
+		);
+		const expressionAttributesNames = keys.reduce(
+			(agg, key) => ({
+				...agg,
+				[`#${key}`]: key,
+			}),
+			{}
+		);
+		const keyConditionExpression = keys.map((key) => `#${key} = :${key}`).join(' AND ');
+		return this.documentClient.query({
+			TableName: tableName,
+			ExpressionAttributeValues: expressionAttributesValues,
+			ExpressionAttributeNames: expressionAttributesNames,
+			KeyConditionExpression: keyConditionExpression,
+			ScanIndexForward: false,
+			IndexName: indexName,
+			Limit: limit,
+			ExclusiveStartKey: lastEvaluatedKey,
 		});
 	}
 

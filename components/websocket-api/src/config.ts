@@ -42,6 +42,11 @@ export const config = async () => {
 				nullable: false,
 				default: null,
 			},
+			MESSAGES_TABLE: {
+				format: String,
+				nullable: false,
+				default: null,
+			},
 			GROUP_USERS_TABLE: {
 				format: String,
 				nullable: false,

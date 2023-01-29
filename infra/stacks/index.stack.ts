@@ -29,7 +29,32 @@ export function IndexStack({ stack }: StackContext) {
 			groupId: 'string',
 			userId: 'string',
 		},
+		globalIndexes: {
+			user_id_index: {
+				partitionKey: 'userId',
+				projection: 'all',
+			},
+		},
 		primaryIndex: { partitionKey: 'groupId', sortKey: 'userId' },
+	});
+
+	const messageTable = new Table(stack, 'messages-table', {
+		fields: {
+			groupId: 'string',
+			userId: 'string',
+			id: 'string',
+		},
+		globalIndexes: {
+			user_id_index: {
+				partitionKey: 'userId',
+				projection: 'all',
+			},
+			group_id_index: {
+				partitionKey: 'groupId',
+				projection: 'all',
+			},
+		},
+		primaryIndex: { partitionKey: 'id' },
 	});
 
 	const cwRole = new Role(stack, 'CWRole', {
@@ -47,11 +72,14 @@ export function IndexStack({ stack }: StackContext) {
 		GroupTableName: groupTable.tableName,
 		GroupUsersTableArn: groupUsersTable.tableArn,
 		GroupUsersTableName: groupUsersTable.tableName,
+		MessagesTableArn: messageTable.tableArn,
+		MessagesTableName: messageTable.tableName,
 	});
 
 	return {
 		connectionTable,
 		groupUsersTable,
+		messageTable,
 		groupTable,
 		cfnAccount,
 		cwRole,

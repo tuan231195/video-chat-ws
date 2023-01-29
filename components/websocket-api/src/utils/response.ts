@@ -9,8 +9,7 @@ const JSON_CONTENT_TYPE = 'application/json';
 
 const cachedApiGateway: Record<string, ApiGatewayManagementApi> = {};
 
-function getApiGateway(event: APIGatewayProxyEvent) {
-	const { stage, domainName } = event.requestContext;
+export function getApiGateway(stage: string, domainName: string) {
 	const domain = `https://${domainName}/${stage}`;
 	if (cachedApiGateway[domain]) {
 		return cachedApiGateway[domain];
@@ -77,7 +76,15 @@ export async function handleRequest(
 	const { principalId } = event.requestContext.authorizer ?? {};
 	const { message, response: responseBody } = await runInContext(
 		app,
-		{ traceId: requestId, context: { userId: principalId, connectionId } },
+		{
+			traceId: requestId,
+			context: {
+				userId: principalId,
+				connectionId,
+				stage: event.requestContext.stage,
+				domainName: event.requestContext.domainName!,
+			},
+		},
 		async () => {
 			try {
 				const result = await handler();
@@ -98,7 +105,7 @@ export async function handleRequest(
 		}
 	);
 	if (message) {
-		const apiGateway = getApiGateway(event);
+		const apiGateway = getApiGateway(event.requestContext.stage, event.requestContext.domainName!);
 		await apiGateway.postToConnection({
 			ConnectionId: connectionId,
 			Data: Buffer.from(typeof message === 'object' ? JSON.stringify(message) : message.toString()),
