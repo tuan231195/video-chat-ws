@@ -4,6 +4,4 @@ export class Message {
 	@IsNotEmpty()
 	@IsString()
 	body!: string;
-
-	id!: string;
 }

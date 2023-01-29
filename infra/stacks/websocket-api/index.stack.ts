@@ -53,6 +53,7 @@ export function IndexStack({ stack }: StackContext) {
 		authorizer: {
 			type: 'lambda',
 			function: authorizerFunction,
+			identitySource: ['route.request.querystring.authorization'],
 		},
 		defaults: {
 			function: {

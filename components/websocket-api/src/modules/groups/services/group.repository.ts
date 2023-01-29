@@ -4,6 +4,7 @@ import { CONFIG_TOKEN, RequestLogger } from '@vdtn359/nestjs-bootstrap';
 import type { Config } from 'src/config';
 import { Group } from 'src/modules/groups/domains';
 import { newId } from 'src/utils/id';
+import { GroupEntity, GroupUserEntity } from 'src/modules/groups/domains/entities';
 
 @Injectable()
 export class GroupRepository extends BaseRepository {
@@ -21,7 +22,7 @@ export class GroupRepository extends BaseRepository {
 		this.groupUsersTable = this.config.get('GROUP_USERS_TABLE')!;
 	}
 
-	createGroup(group: Group) {
+	createGroup(group: Group): Promise<GroupEntity> {
 		this.logger.info(`New group`, {
 			group,
 		});
@@ -29,7 +30,7 @@ export class GroupRepository extends BaseRepository {
 			...group,
 			createdAt: new Date(),
 			id: newId(),
-		});
+		}) as Promise<GroupEntity>;
 	}
 
 	getGroupUsers(groupId: string) {
@@ -38,7 +39,7 @@ export class GroupRepository extends BaseRepository {
 			key: {
 				groupId,
 			},
-		});
+		}) as Promise<GroupUserEntity[]>;
 	}
 
 	joinGroup(groupId: string, userId: string, connectionId: string) {
@@ -48,7 +49,7 @@ export class GroupRepository extends BaseRepository {
 			groupId,
 			userId,
 			connectionId,
-		});
+		}) as Promise<GroupUserEntity>;
 	}
 
 	leaveGroup(groupId: string, userId: string) {
@@ -75,6 +76,6 @@ export class GroupRepository extends BaseRepository {
 				userId,
 			},
 			indexName: 'user_id_index',
-		});
+		}) as Promise<GroupUserEntity[]>;
 	}
 }

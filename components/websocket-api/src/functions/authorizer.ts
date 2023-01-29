@@ -37,7 +37,7 @@ export const handler = async (event: APIGatewayRequestAuthorizerEvent) => {
 		const secret = config.get('JWT_SECRET')!;
 		logger.debug('Authorizer event', event);
 
-		const jwt = event.headers?.authorization;
+		const jwt = event.headers?.authorization ?? event.queryStringParameters?.authorization;
 		let userId: string | undefined;
 		if (jwt) {
 			try {

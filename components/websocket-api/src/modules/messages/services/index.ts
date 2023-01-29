@@ -1,1 +1,2 @@
-export * from './commands';
+export * from './message.repository';
+export * from './message.service';

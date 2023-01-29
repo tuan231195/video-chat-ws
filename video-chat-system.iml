@@ -6,6 +6,7 @@
       <excludeFolder url="file://$MODULE_DIR$/components/websocket-api/dist" />
       <excludeFolder url="file://$MODULE_DIR$/.sst" />
       <excludeFolder url="file://$MODULE_DIR$/packages/dynamodb/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/.build" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
   </component>

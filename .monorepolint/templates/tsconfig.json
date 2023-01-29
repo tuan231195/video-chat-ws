@@ -9,5 +9,5 @@
 			"root/*": ["../../*"]
 		}
 	},
-	"include": ["./**/*.ts", ".eslintrc.cjs", ".release-it.cjs", "jest.config.cjs"]
+	"include": ["./**/*.ts", "./**/*.tsx", ".eslintrc.cjs", ".release-it.cjs", "jest.config.cjs"]
 }

@@ -4,8 +4,10 @@
 	"compilerOptions": {
 		"module": "esnext",
 		"target": "es2017",
+		"lib": ["DOM", "ESNext"],
 		"moduleResolution": "node",
-		"noEmit": true
+		"noEmit": true,
+		"jsx": "preserve"
 	},
 	"include": [
 		".eslintrc.cjs",

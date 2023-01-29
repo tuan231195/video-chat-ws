@@ -106,9 +106,9 @@ importers:
             uuid: ^9.0.0
         dependencies:
             '@aws-sdk/client-apigatewaymanagementapi': 3.254.0
-            '@nestjs/common': 9.2.1_gdya5xlnz6pxq4lfne2thg4tiy
-            '@nestjs/core': 9.2.1_jeqwo7fzb4lebm6nefyhh5xlci
-            '@nestjs/cqrs': 9.0.1_5jpsbfbll2knk5qgjb5qqh7xhu
+            '@nestjs/common': 9.2.1_brdl4igdapn74yom6zim4xl3pq
+            '@nestjs/core': 9.2.1_b4pxbpa7chblgbyake5iz5rdmu
+            '@nestjs/cqrs': 9.0.1_fyic65utxiftcghm7bf7rrj4z4
             '@serverless-stack/node': 1.18.4
             '@vdtn359/dynamodb-nestjs-module': link:../../packages/dynamodb
             '@vdtn359/nestjs-bootstrap': 1.0.22_dntc3uqqknzoduyjojusds5kla
@@ -139,10 +139,13 @@ importers:
             '@types/node': ^16.18.11
             '@types/react': ^18.0.27
             '@types/react-dom': ^18.0.10
+            '@types/uuid': ^9.0.0
             react: ^18.2.0
             react-dom: ^18.2.0
             react-scripts: 5.0.1
+            rxjs: ^7.8.0
             typescript: ^4.9.4
+            uuid: ^9.0.0
             web-vitals: ^2.1.4
         dependencies:
             '@testing-library/jest-dom': 5.16.5
@@ -155,8 +158,12 @@ importers:
             react: 18.2.0
             react-dom: 18.2.0_react@18.2.0
             react-scripts: 5.0.1_6ujtt3mftzqajtglqcnfc5zihu
+            rxjs: 7.8.0
             typescript: 4.9.4
+            uuid: 9.0.0
             web-vitals: 2.1.4
+        devDependencies:
+            '@types/uuid': 9.0.0
 
     packages/dynamodb:
         specifiers:
@@ -171,7 +178,7 @@ importers:
         dependencies:
             '@aws-sdk/client-dynamodb': 3.254.0
             '@aws-sdk/lib-dynamodb': 3.254.0_3mhwqyitfuvmr3q3s4ijtjo76m
-            '@nestjs/common': 9.2.1_j5hagqx4mwzscud4kyjdvubauy
+            '@nestjs/common': 9.2.1_mnr6j2del53muneqly5h4y27ai
             '@vdtn359/nestjs-bootstrap': 1.0.22_dntc3uqqknzoduyjojusds5kla
             dataloader: 2.1.0
             lodash: 4.17.21
@@ -5485,11 +5492,11 @@ packages:
             '@nestjs/common': '>=7.0.0'
             '@nestjs/core': '>=7.0.0'
         dependencies:
-            '@nestjs/common': 9.2.1_gdya5xlnz6pxq4lfne2thg4tiy
-            '@nestjs/core': 9.2.1_jeqwo7fzb4lebm6nefyhh5xlci
+            '@nestjs/common': 9.2.1_brdl4igdapn74yom6zim4xl3pq
+            '@nestjs/core': 9.2.1_b4pxbpa7chblgbyake5iz5rdmu
         dev: false
 
-    /@nestjs/common/9.2.1_gdya5xlnz6pxq4lfne2thg4tiy:
+    /@nestjs/common/9.2.1_brdl4igdapn74yom6zim4xl3pq:
         resolution:
             {
                 integrity: sha512-nZuo3oDsSSlC5mti/M2aCWTEIfHPGDXmBwWgPeCpRbrNz3IWd109rkajll+yxgidVjznAdBS9y00JkAVJblNYw==,
@@ -5512,12 +5519,12 @@ packages:
             class-validator: 0.13.2
             iterare: 1.2.1
             reflect-metadata: 0.1.13
-            rxjs: 7.5.6
+            rxjs: 7.8.0
             tslib: 2.4.1
             uuid: 9.0.0
         dev: false
 
-    /@nestjs/common/9.2.1_j5hagqx4mwzscud4kyjdvubauy:
+    /@nestjs/common/9.2.1_mnr6j2del53muneqly5h4y27ai:
         resolution:
             {
                 integrity: sha512-nZuo3oDsSSlC5mti/M2aCWTEIfHPGDXmBwWgPeCpRbrNz3IWd109rkajll+yxgidVjznAdBS9y00JkAVJblNYw==,
@@ -5538,12 +5545,12 @@ packages:
         dependencies:
             iterare: 1.2.1
             reflect-metadata: 0.1.13
-            rxjs: 7.5.6
+            rxjs: 7.8.0
             tslib: 2.4.1
             uuid: 9.0.0
         dev: false
 
-    /@nestjs/core/9.2.1_jeqwo7fzb4lebm6nefyhh5xlci:
+    /@nestjs/core/9.2.1_b4pxbpa7chblgbyake5iz5rdmu:
         resolution:
             {
                 integrity: sha512-a9GkXuu8uXgNgCVW+17iI8kLCltO+HwHpU2IhR+32JKnN2WEQ1YEWU4t3GJ2MNq44YkjIw9zrKvFkjJBlYrNbQ==,
@@ -5564,21 +5571,21 @@ packages:
             '@nestjs/websockets':
                 optional: true
         dependencies:
-            '@nestjs/common': 9.2.1_gdya5xlnz6pxq4lfne2thg4tiy
+            '@nestjs/common': 9.2.1_brdl4igdapn74yom6zim4xl3pq
             '@nuxtjs/opencollective': 0.3.2
             fast-safe-stringify: 2.1.1
             iterare: 1.2.1
             object-hash: 3.0.0
             path-to-regexp: 3.2.0
             reflect-metadata: 0.1.13
-            rxjs: 7.5.6
+            rxjs: 7.8.0
             tslib: 2.4.1
             uuid: 9.0.0
         transitivePeerDependencies:
             - encoding
         dev: false
 
-    /@nestjs/cqrs/9.0.1_5jpsbfbll2knk5qgjb5qqh7xhu:
+    /@nestjs/cqrs/9.0.1_fyic65utxiftcghm7bf7rrj4z4:
         resolution:
             {
                 integrity: sha512-DsqkAaIHy9+Ot4FJybmlDQk0HBDTGztz0F3LcMnatFDQv1X56W0Y2+R/7jjwHsmHzQfbffT2FGyCOx2/9apFCg==,
@@ -5589,10 +5596,10 @@ packages:
             reflect-metadata: 0.1.13
             rxjs: ^7.2.0
         dependencies:
-            '@nestjs/common': 9.2.1_gdya5xlnz6pxq4lfne2thg4tiy
-            '@nestjs/core': 9.2.1_jeqwo7fzb4lebm6nefyhh5xlci
+            '@nestjs/common': 9.2.1_brdl4igdapn74yom6zim4xl3pq
+            '@nestjs/core': 9.2.1_b4pxbpa7chblgbyake5iz5rdmu
             reflect-metadata: 0.1.13
-            rxjs: 7.5.6
+            rxjs: 7.8.0
             uuid: 8.3.2
         dev: false
 
@@ -5989,7 +5996,7 @@ packages:
             pretty-ms: 7.0.1
             ramda: 0.27.2
             right-pad: 1.0.1
-            rxjs: 7.5.6
+            rxjs: 7.8.0
             semver: 7.3.8
             stacktracey: 2.1.8
             string-length: 4.0.2
@@ -8021,8 +8028,8 @@ packages:
             reflect-metadata: ^0.1.13
         dependencies:
             '@nestjs-steroids/async-context': 2.0.0_hjcqpoaebdr7gdo5hgc22hthbe
-            '@nestjs/common': 9.2.1_gdya5xlnz6pxq4lfne2thg4tiy
-            '@nestjs/core': 9.2.1_jeqwo7fzb4lebm6nefyhh5xlci
+            '@nestjs/common': 9.2.1_brdl4igdapn74yom6zim4xl3pq
+            '@nestjs/core': 9.2.1_b4pxbpa7chblgbyake5iz5rdmu
             '@types/convict': 6.1.1
             convict: 6.2.4
             lodash: 4.17.21
@@ -15085,7 +15092,7 @@ packages:
             mute-stream: 0.0.8
             ora: 5.4.1
             run-async: 2.4.1
-            rxjs: 7.5.6
+            rxjs: 7.8.0
             string-width: 4.2.3
             strip-ansi: 6.0.1
             through: 2.3.8
@@ -15109,7 +15116,7 @@ packages:
             mute-stream: 0.0.8
             ora: 6.1.2
             run-async: 2.4.1
-            rxjs: 7.5.6
+            rxjs: 7.8.0
             string-width: 5.1.2
             strip-ansi: 7.0.1
             through: 2.3.8
@@ -17369,7 +17376,7 @@ packages:
             log-update: 4.0.0
             p-map: 4.0.0
             rfdc: 1.3.0
-            rxjs: 7.5.6
+            rxjs: 7.8.0
             through: 2.3.8
             wrap-ansi: 7.0.0
         dev: true
@@ -21614,10 +21621,10 @@ packages:
             }
         dev: true
 
-    /rxjs/7.5.6:
+    /rxjs/7.8.0:
         resolution:
             {
-                integrity: sha512-dnyv2/YsXhnm461G+R/Pe5bWP41Nm6LBXEYWI6eiFP4fiwx6WRI/CD0zbdVAudd9xwLEF2IDcKXLHit0FYjUzw==,
+                integrity: sha512-F2+gxDshqmIub1KdvZkaEfGDwLNpPvk9Fs6LD/MyQxNgMds/WH9OdDDXOmxUZpME+iSK3rQCctkL0DYyytUqMg==,
             }
         dependencies:
             tslib: 2.4.1

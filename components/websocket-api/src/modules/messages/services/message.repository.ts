@@ -4,6 +4,7 @@ import { CONFIG_TOKEN, RequestLogger } from '@vdtn359/nestjs-bootstrap';
 import type { Config } from 'src/config';
 import { Message } from 'src/modules/messages/domains/message';
 import { newId } from 'src/utils/id';
+import { MessageEntity } from 'src/modules/messages/entities';
 
 @Injectable()
 export class MessageRepository {
@@ -17,7 +18,7 @@ export class MessageRepository {
 		this.messagesTable = this.config.get('MESSAGES_TABLE')!;
 	}
 
-	createMessage(groupId: string, userId: string, message: Message) {
+	createMessage(groupId: string, userId: string, message: Message): Promise<MessageEntity> {
 		this.logger.info(`New message for group ${groupId}`, {
 			message,
 		});
@@ -27,7 +28,7 @@ export class MessageRepository {
 			groupId,
 			userId,
 			createdAt: new Date(),
-		});
+		}) as Promise<MessageEntity>;
 	}
 
 	deleteMessage(messageId: string) {

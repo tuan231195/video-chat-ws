@@ -29,6 +29,7 @@ export const handler = async (event: APIGatewayProxyEvent, context: Context) => 
 		logger.debug('Message event', { event });
 		const eventBody = tryParse(event.body);
 		const action = eventBody?.action;
+		const correlationId = eventBody?.correlationId;
 		if (!action) {
 			throw new BadRequestException({
 				message: 'Action is required',
@@ -41,6 +42,7 @@ export const handler = async (event: APIGatewayProxyEvent, context: Context) => 
 			return {
 				action: `${action}:succeeded`,
 				result: dispatchResult,
+				correlationId,
 			};
 		} catch (err) {
 			logger.info(`Failed to handle action ${action}`, {
@@ -49,6 +51,7 @@ export const handler = async (event: APIGatewayProxyEvent, context: Context) => 
 			return {
 				action: `${action}:failed`,
 				result: error(err),
+				correlationId,
 			};
 		}
 	});
