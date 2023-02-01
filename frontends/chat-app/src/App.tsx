@@ -1,18 +1,14 @@
-import React, { useEffect } from 'react';
-import { Logger } from 'src/lib/logger';
-import { SocketService } from './lib';
+import React from 'react';
+import { userService } from 'src/services';
+import { SessionContext } from 'src/context/session';
 
 function App() {
-	useEffect(() => {
-		const websocket = new SocketService();
-		websocket.connect();
-		websocket
-			.sendMessageAwaitResponse({ action: 'user-groups:list', userId: 'abc123' })
-			.then(Logger.info)
-			.catch(Logger.error);
-		websocket.sendMessageAwaitResponse({ action: 'user-groups:list' }).then(Logger.info).catch(Logger.error);
-	}, []);
-	return <div className="App">Learn React</div>;
+	const user = userService.getSession();
+	if (!user) {
+		return <div>Unauthorized</div>;
+	}
+
+	return <SessionContext.Provider value={user}>Authorized</SessionContext.Provider>;
 }
 
 export default App;

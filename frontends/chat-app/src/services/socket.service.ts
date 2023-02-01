@@ -1,19 +1,17 @@
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { v4 as uuidv4 } from 'uuid';
 import { catchError, concatMap, EMPTY, filter, lastValueFrom, of, Subject, take, tap, timeout } from 'rxjs';
-import { Logger } from 'src/lib/logger';
+import { UserService } from 'src/services/user.service';
+import { ResponseError } from 'src/lib/errors';
+import { Logger } from 'src/services/logger';
 
 type Message = Record<string, any> & {
 	action: string;
 };
 
-class ResponseError extends Error {
-	constructor(readonly errors: any[]) {
-		super('Response error');
-	}
-}
-
 export class SocketService {
+	constructor(private readonly userService: UserService) {}
+
 	private socket$!: WebSocketSubject<any>;
 
 	private messagesSubject$ = new Subject();
@@ -33,9 +31,12 @@ export class SocketService {
 	}
 
 	private getNewWebSocket() {
-		return webSocket(
-			'wss://eycdqsqu5m.execute-api.ap-southeast-2.amazonaws.com/dev?authorization=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkZWYxMjMiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.CPZC5MWC42XL_6fXA3ygnRk4xxSnjMp0B3zmETszhzY'
-		);
+		const session = this.userService.getSession();
+		if (!session) {
+			throw new Error('Unauthorized');
+		}
+		const { token } = session;
+		return webSocket(`${process.env.REACT_APP_WEBSOCKET_API_URL}?authorization=${token}`);
 	}
 
 	sendMessage(msg: Message) {
