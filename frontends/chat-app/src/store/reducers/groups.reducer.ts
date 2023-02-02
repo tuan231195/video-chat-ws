@@ -15,7 +15,7 @@ const initialState: InitialState = {
 	items: [],
 };
 
-export const groups = createSlice({
+export const groupsReducer = createSlice({
 	name: 'groups',
 	initialState,
 	reducers: {},

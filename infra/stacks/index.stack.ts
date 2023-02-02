@@ -17,6 +17,13 @@ export function IndexStack({ stack }: StackContext) {
 		},
 	});
 
+	const userTable = new Table(stack, 'users-table', {
+		fields: {
+			id: 'string',
+		},
+		primaryIndex: { partitionKey: 'id' },
+	});
+
 	const groupTable = new Table(stack, 'group-table', {
 		fields: {
 			id: 'string',
@@ -74,12 +81,15 @@ export function IndexStack({ stack }: StackContext) {
 		GroupUsersTableName: groupUsersTable.tableName,
 		MessagesTableArn: messageTable.tableArn,
 		MessagesTableName: messageTable.tableName,
+		UsersTableArn: userTable.tableArn,
+		UsersTableName: userTable.tableName,
 	});
 
 	return {
 		connectionTable,
 		groupUsersTable,
 		messageTable,
+		userTable,
 		groupTable,
 		cfnAccount,
 		cwRole,

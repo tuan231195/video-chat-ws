@@ -4,6 +4,7 @@ import { DynamoModule } from '@vdtn359/dynamodb-nestjs-module';
 import { CommandModule } from 'src/modules/command/command.module';
 import { GroupModule } from 'src/modules/groups/group.module';
 import { MessageModule } from 'src/modules/messages/message.module';
+import { UserModule } from 'src/modules/users/user.module';
 import { ConnectionModule } from './modules/connections/connection.module';
 import { config } from './config';
 
@@ -15,6 +16,6 @@ const { version } = require('../package.json');
 		name: 'websocket-api',
 		config,
 	},
-	imports: [DynamoModule, ConnectionModule, CommandModule, GroupModule, MessageModule],
+	imports: [DynamoModule, ConnectionModule, CommandModule, GroupModule, MessageModule, UserModule],
 })
 export class AppModule {}

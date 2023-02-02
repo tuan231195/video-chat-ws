@@ -3,7 +3,7 @@ import { RequestLogger } from '@vdtn359/nestjs-bootstrap';
 import { GroupRepository } from 'src/modules/groups/services/group.repository';
 import { BaseCommand, Command } from 'src/modules/command/domains';
 
-@Command('user-groups:list')
+@Command('user-groupsReducer:list')
 export class ListUserGroupsCommand extends BaseCommand {}
 @CommandHandler(ListUserGroupsCommand)
 export class ListUserGroupsHandler implements ICommandHandler<ListUserGroupsCommand> {

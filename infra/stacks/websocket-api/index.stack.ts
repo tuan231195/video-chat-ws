@@ -9,10 +9,14 @@ export function IndexStack({ stack }: StackContext) {
 	stack.setDefaultFunctionProps({
 		srcPath: 'components/websocket-api/dist',
 	});
-	const { connectionTable, messageTable, groupTable, groupUsersTable } = use(RootStack);
+	const { connectionTable, messageTable, groupTable, userTable, groupUsersTable } = use(RootStack);
 
 	const connectionsTableConfig = new Config.Parameter(stack, 'CONNECTIONS_TABLE', {
 		value: connectionTable.tableName,
+	});
+
+	const usersTableConfig = new Config.Parameter(stack, 'USERS_TABLE', {
+		value: userTable.tableName,
 	});
 
 	const messagesTableConfig = new Config.Parameter(stack, 'MESSAGES_TABLE', {
@@ -33,8 +37,10 @@ export function IndexStack({ stack }: StackContext) {
 		connectionsTableConfig,
 		messagesTableConfig,
 		groupTableConfig,
+		usersTableConfig,
 		groupUsersTableConfig,
 		groupTable,
+		userTable,
 		groupUsersTable,
 		messageTable,
 		connectionTable,

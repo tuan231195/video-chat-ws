@@ -1,6 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Logger } from 'src/services';
+import { socketService } from 'src/services';
 
-export const loadChat = createAsyncThunk('messages/fetch', async (groupId: string) => {
-	Logger.info(groupId);
-});
+export const loadChat = createAsyncThunk('messages/fetch', async (groupId: string) =>
+	socketService.sendMessageAwaitResponse<any>({
+		action: 'messages:list',
+		groupId,
+	})
+);

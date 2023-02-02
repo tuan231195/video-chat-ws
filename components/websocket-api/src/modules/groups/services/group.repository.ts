@@ -17,8 +17,9 @@ export class GroupRepository extends BaseRepository {
 		@Inject(CONFIG_TOKEN) private readonly config: Config,
 		private readonly logger: RequestLogger
 	) {
-		super(dynamodbService, config.get('GROUPS_TABLE')!, [['id']]);
-		this.groupTable = this.config.get('GROUPS_TABLE')!;
+		const table = config.get('GROUPS_TABLE')!;
+		super(dynamodbService, table, [['id']]);
+		this.groupTable = table;
 		this.groupUsersTable = this.config.get('GROUP_USERS_TABLE')!;
 	}
 
@@ -28,7 +29,7 @@ export class GroupRepository extends BaseRepository {
 		});
 		return this.dynamodbService.putItem(this.groupTable, {
 			...group,
-			createdAt: new Date(),
+			createdAt: new Date().toISOString(),
 			id: newId(),
 		}) as Promise<GroupEntity>;
 	}

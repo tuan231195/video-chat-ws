@@ -1,6 +1,6 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocument, QueryCommandOutput } from '@aws-sdk/lib-dynamodb';
-import { chunk } from 'lodash';
+import { chunk, uniqBy } from 'lodash';
 import { Inject, Injectable } from '@nestjs/common';
 import { CONFIG_TOKEN } from '@vdtn359/nestjs-bootstrap';
 import type { Config } from 'src/config';
@@ -41,14 +41,23 @@ export class DynamoDbService {
 	}
 
 	async batchGet(tableName: string, keys: Record<string, any>[]) {
-		const { Responses } = await this.documentClient.batchGet({
-			RequestItems: {
-				[tableName]: {
-					Keys: keys,
+		const uniqueKeys = uniqBy(keys, (value) => JSON.stringify(value));
+		// dynamodb allows up to 25 updates in bulk
+		const batches = chunk(uniqueKeys, 25);
+
+		const items: any[] = [];
+		for (const batch of batches) {
+			// eslint-disable-next-line no-await-in-loop
+			const { Responses } = await this.documentClient.batchGet({
+				RequestItems: {
+					[tableName]: {
+						Keys: batch,
+					},
 				},
-			},
-		});
-		return Responses?.[tableName] ?? [];
+			});
+			items.push(...(Responses?.[tableName] ?? []));
+		}
+		return items;
 	}
 
 	async queryAll({

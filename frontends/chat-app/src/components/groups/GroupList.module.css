@@ -1,3 +1,7 @@
 .group__item {
 	cursor: pointer;
 }
+
+.group__item--selected {
+	background: #eaf3ff;
+}

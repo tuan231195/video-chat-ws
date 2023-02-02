@@ -7,7 +7,7 @@ import { CenterSpin } from 'src/components/common/CenterSpin';
 import styles from './GroupList.module.css';
 
 export const GroupList = () => {
-	const { loading, items } = useAppSelector((store) => store.groups);
+	const { loading, items, selectedGroup } = useAppSelector((store) => store.groups);
 	const dispatch = useAppDispatch();
 	if (loading) {
 		return <CenterSpin size="large" />;
@@ -20,11 +20,17 @@ export const GroupList = () => {
 			size="large"
 			itemLayout="horizontal"
 			dataSource={items}
-			renderItem={(item) => (
-				<List.Item className={styles.group__item} key={item.groupId} onClick={() => onSelectGroup(item)}>
-					<List.Item.Meta title={item.group.name} />
-				</List.Item>
-			)}
+			renderItem={(item) => {
+				const isSelected = item.groupId === selectedGroup?.groupId;
+				return (
+					<List.Item
+						className={`${styles.group__item} ${isSelected ? styles['group__item--selected'] : ''}`}
+						key={item.groupId}
+						onClick={() => onSelectGroup(item)}>
+						<List.Item.Meta title={item.group.name} />
+					</List.Item>
+				);
+			}}
 		/>
 	);
 };

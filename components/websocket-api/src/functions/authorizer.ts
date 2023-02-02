@@ -4,10 +4,11 @@ import { CONFIG_TOKEN, RequestLogger, runInContext } from '@vdtn359/nestjs-boots
 import { verify } from 'jsonwebtoken';
 import { Config } from 'src/config';
 import { APIGatewayRequestAuthorizerEvent } from 'aws-lambda';
+import { User } from 'src/modules/users/domains';
 
-const generatePolicy = (principalId: string, effect: 'Allow' | 'Deny', resource: string) => {
+const generatePolicy = (user: User, effect: 'Allow' | 'Deny', resource: string) => {
 	const authResponse: any = {};
-	authResponse.principalId = principalId;
+	authResponse.principalId = user.id;
 	if (effect && resource) {
 		authResponse.policyDocument = {
 			Version: '2012-10-17',
@@ -21,12 +22,12 @@ const generatePolicy = (principalId: string, effect: 'Allow' | 'Deny', resource:
 		};
 	}
 	authResponse.context = {
-		userId: principalId,
+		user: JSON.stringify(user),
 	};
 	return authResponse;
 };
 
-const generateAllow = (principalId: string, resource: string) => generatePolicy(principalId, 'Allow', resource);
+const generateAllow = (user: User, resource: string) => generatePolicy(user, 'Allow', resource);
 
 export const handler = async (event: APIGatewayRequestAuthorizerEvent) => {
 	const app = await getApplication();
@@ -38,10 +39,14 @@ export const handler = async (event: APIGatewayRequestAuthorizerEvent) => {
 		logger.debug('Authorizer event', event);
 
 		const jwt = event.headers?.authorization ?? event.queryStringParameters?.authorization;
-		let userId: string | undefined;
+		let user: User | undefined;
 		if (jwt) {
 			try {
-				({ sub: userId } = verify(jwt, secret) as any);
+				const payload: Record<string, any> = verify(jwt, secret) as any;
+				user = {
+					id: payload.sub,
+					name: payload.name,
+				};
 			} catch (err) {
 				logger.warn('Unauthorized request', {
 					jwt,
@@ -49,10 +54,10 @@ export const handler = async (event: APIGatewayRequestAuthorizerEvent) => {
 				});
 			}
 		}
-		if (!userId) {
+		if (!user) {
 			throw new Error('Unauthorized');
 		}
 
-		return generateAllow(userId, event.methodArn);
+		return generateAllow(user, event.methodArn);
 	});
 };

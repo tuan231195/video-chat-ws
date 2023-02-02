@@ -10,18 +10,20 @@ import {
 	ListGroupUsersHandler,
 	ListUserGroupsHandler,
 } from 'src/modules/command/services/commands/groups';
-import { CreateMessageHandler } from 'src/modules/command/services/commands/messages';
+import { CreateMessageHandler, ListMessagesHandler } from 'src/modules/command/services/commands/messages';
 import { GroupModule } from 'src/modules/groups/group.module';
 import { MessageModule } from 'src/modules/messages/message.module';
+import { UserModule } from 'src/modules/users/user.module';
 
 @Module({
-	imports: [DynamoModule, CoreModule, CqrsModule, GroupModule, MessageModule],
+	imports: [DynamoModule, CoreModule, CqrsModule, GroupModule, MessageModule, UserModule],
 	providers: [
 		CommandDispatcher,
 		CreateGroupHandler,
 		JoinGroupHandler,
 		LeaveGroupHandler,
 		ListGroupUsersHandler,
+		ListMessagesHandler,
 		ListUserGroupsHandler,
 		CreateMessageHandler,
 	],

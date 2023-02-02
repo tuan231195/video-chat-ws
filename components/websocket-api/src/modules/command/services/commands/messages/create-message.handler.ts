@@ -5,7 +5,7 @@ import { MessageService } from 'src/modules/messages/services/message.service';
 import { BaseCommand, Command } from 'src/modules/command/domains';
 import { IsDefined, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { Message } from 'src/modules/messages/domains/message';
+import { Message } from 'src/modules/messages/domains/entities/message';
 
 @Command('message:create')
 export class CreateMessageCommand extends BaseCommand {

@@ -1,10 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { groups } from 'src/store/reducers/groups';
+import { groupsReducer } from 'src/store/reducers/groups.reducer';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { errorMiddleware } from 'src/store/middlewares/error';
+import { messagesReducer } from 'src/store/reducers/messages.reducer';
 
 const reducers = combineReducers({
-	groups: groups.reducer,
+	groups: groupsReducer.reducer,
+	messages: messagesReducer.reducer,
 });
 
 export const store = configureStore({

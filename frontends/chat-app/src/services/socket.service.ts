@@ -45,7 +45,7 @@ export class SocketService {
 		this.socket$.next(msg);
 	}
 
-	sendMessageAwaitResponse(message: Message) {
+	sendMessageAwaitResponse<T = any>(message: Message): Promise<T> {
 		const correlationId = uuidv4();
 		this.socket$.next({
 			...message,
