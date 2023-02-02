@@ -10,7 +10,9 @@ type Message = Record<string, any> & {
 };
 
 export class SocketService {
-	constructor(private readonly userService: UserService) {}
+	constructor(private readonly userService: UserService) {
+		this.connect();
+	}
 
 	private socket$!: WebSocketSubject<any>;
 
@@ -59,7 +61,7 @@ export class SocketService {
 					if (response.action === `${message.action}:succeeded`) {
 						return of(response.result);
 					}
-					throw new ResponseError(response.result?.errors);
+					throw new ResponseError(response.result);
 				})
 			)
 		);

@@ -1,5 +1,11 @@
 export class ResponseError extends Error {
-	constructor(readonly errors: any[]) {
+	errors: any[];
+
+	status: number;
+
+	constructor(errorResponse: any = {}) {
 		super('Response error');
+		this.errors = errorResponse.errors ?? [];
+		this.status = errorResponse.status ?? 500;
 	}
 }
