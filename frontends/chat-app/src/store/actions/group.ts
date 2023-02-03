@@ -1,21 +1,25 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { socketService } from 'src/services';
 import { UserGroup } from 'src/types/group';
-import { loadChat } from 'src/store/actions/message';
+import { loadGroupChat } from 'src/store/actions/message';
+import { createAppAsyncThunk } from 'src/store/thunk';
 
-export const selectGroup = createAsyncThunk('groupsReducer/select', async (userGroup: UserGroup, { dispatch }) => {
-	dispatch(loadChat(userGroup.groupId));
+const LIST_USER_GROUPS = 'user-groups:list';
+
+export const selectGroup = createAppAsyncThunk('groupsReducer/select', async (userGroup: UserGroup, { dispatch }) => {
+	dispatch(loadGroupChat(userGroup.groupId));
 
 	return userGroup;
 });
 
-export const loadGroups = createAsyncThunk('groupsReducer/fetch', async (arg, { dispatch }) => {
-	const groups = await socketService.sendMessageAwaitResponse<UserGroup[]>({
-		action: 'user-groupsReducer:list',
-	});
+export const loadGroups = createAppAsyncThunk(
+	'groupsReducer/fetch',
+	async (arg, { dispatch, extra: { socketService } }) => {
+		const groups = await socketService.sendMessageAwaitResponse<UserGroup[]>({
+			action: LIST_USER_GROUPS,
+		});
 
-	if (groups.length) {
-		dispatch(selectGroup(groups[0]));
+		if (groups.length) {
+			dispatch(selectGroup(groups[0]));
+		}
+		return groups;
 	}
-	return groups;
-});
+);

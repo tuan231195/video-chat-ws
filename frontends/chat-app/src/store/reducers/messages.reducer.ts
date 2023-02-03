@@ -1,16 +1,18 @@
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit';
-import { UserGroup } from 'src/types/group';
-import { loadChat } from 'src/store/actions/message';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { loadGroupChat } from 'src/store/actions/message';
+import { Message } from 'src/types/message';
 
-export interface InitialState {
+export interface State {
 	loading: boolean;
-	items: UserGroup[];
+	fetching: boolean;
+	items: Message[];
 	lastKey: any;
 }
 
-const initialState: InitialState = {
-	loading: false,
+const initialState: State = {
+	loading: true,
+	fetching: false,
 	items: [],
 	lastKey: null,
 };
@@ -18,19 +20,24 @@ const initialState: InitialState = {
 export const messagesReducer = createSlice({
 	name: 'messages',
 	initialState,
-	reducers: {},
+	reducers: {
+		messageCreated: (state: State, action: PayloadAction<Message>) => {
+			state.items.push(action.payload);
+		},
+	},
 	extraReducers: (builder) => {
 		builder
-			.addCase(loadChat.fulfilled, (state, action) => {
+			.addCase(loadGroupChat.fulfilled, (state, action) => {
 				const { messages: items, lastEvaluatedKey } = action.payload;
-				state.items = items;
+				state.items = items.reverse();
 				state.lastKey = lastEvaluatedKey ?? null;
+				state.loading = false;
 			})
-			.addCase(loadChat.pending, (state) => {
+			.addCase(loadGroupChat.pending, (state) => {
 				state.items = [];
 				state.loading = true;
 			})
-			.addCase(loadChat.rejected, (state) => {
+			.addCase(loadGroupChat.rejected, (state) => {
 				state.loading = false;
 			});
 	},

@@ -6,6 +6,9 @@ import { BaseCommand, Command } from 'src/modules/command/domains';
 import { IsDefined, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { Message } from 'src/modules/messages/domains/entities/message';
+import { GroupRepository } from 'src/modules/groups/services';
+import { MessageHelper } from 'src/modules/command/services/commands/messages/message.helper';
+import { GroupHelper } from 'src/modules/command/services/commands/groups/group.helper';
 
 @Command('message:create')
 export class CreateMessageCommand extends BaseCommand {
@@ -24,21 +27,29 @@ export class CreateMessageHandler implements ICommandHandler<CreateMessageComman
 	constructor(
 		private readonly logger: RequestLogger,
 		private readonly messageRepository: MessageRepository,
-		private readonly messageService: MessageService
+		private readonly groupRepository: GroupRepository,
+		private readonly messageService: MessageService,
+		private readonly messageHelper: MessageHelper,
+		private readonly groupHelper: GroupHelper
 	) {}
 
 	async execute(command: CreateMessageCommand) {
 		this.logger.info('Create group message', { command });
+
+		await this.groupHelper.checkGroupUser(command.groupId, command.context.userId);
 
 		const message = await this.messageRepository.createMessage(
 			command.groupId,
 			command.context.userId,
 			command.message
 		);
-		await this.messageService.broadcastMessage(message, {
-			exclude: command.context.userId,
+		await this.groupRepository.updateGroup(command.groupId, {
+			lastMessageId: message.id,
 		});
+		const messageDetails = await this.messageHelper.loadDetails(message);
 
-		return message;
+		await this.messageService.broadcastMessage(messageDetails!);
+
+		return messageDetails;
 	}
 }

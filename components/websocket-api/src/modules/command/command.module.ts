@@ -14,6 +14,8 @@ import { CreateMessageHandler, ListMessagesHandler } from 'src/modules/command/s
 import { GroupModule } from 'src/modules/groups/group.module';
 import { MessageModule } from 'src/modules/messages/message.module';
 import { UserModule } from 'src/modules/users/user.module';
+import { GroupHelper } from 'src/modules/command/services/commands/groups/group.helper';
+import { MessageHelper } from 'src/modules/command/services/commands/messages/message.helper';
 
 @Module({
 	imports: [DynamoModule, CoreModule, CqrsModule, GroupModule, MessageModule, UserModule],
@@ -26,6 +28,8 @@ import { UserModule } from 'src/modules/users/user.module';
 		ListMessagesHandler,
 		ListUserGroupsHandler,
 		CreateMessageHandler,
+		GroupHelper,
+		MessageHelper,
 	],
 	exports: [CommandDispatcher],
 })

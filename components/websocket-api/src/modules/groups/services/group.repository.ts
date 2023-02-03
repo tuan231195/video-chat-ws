@@ -43,13 +43,24 @@ export class GroupRepository extends BaseRepository {
 		}) as Promise<GroupUserEntity[]>;
 	}
 
-	joinGroup(groupId: string, userId: string, connectionId: string) {
-		this.logger.info(`User ${userId} with connection ${connectionId} joined group ${groupId}`);
+	async getGroupUser(groupId: string, userId: string) {
+		const { Item: groupUser = null } = await this.dynamodbService.documentClient.get({
+			TableName: this.groupUsersTable,
+			Key: {
+				groupId,
+				userId,
+			},
+		});
+		return groupUser as GroupUserEntity | null;
+	}
+
+	joinGroup(groupId: string, userId: string) {
+		this.logger.info(`User ${userId} joined group ${groupId}`);
 
 		return this.dynamodbService.putItem(this.groupUsersTable, {
 			groupId,
 			userId,
-			connectionId,
+			createdAt: new Date().toISOString(),
 		}) as Promise<GroupUserEntity>;
 	}
 
@@ -78,5 +89,16 @@ export class GroupRepository extends BaseRepository {
 			},
 			indexName: 'user_id_index',
 		}) as Promise<GroupUserEntity[]>;
+	}
+
+	async updateGroup(groupId: string, props: Record<string, any>) {
+		return this.dynamodbService.upsert(
+			this.groupTable,
+			{ id: groupId },
+			{
+				...props,
+				id: groupId,
+			}
+		);
 	}
 }

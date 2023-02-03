@@ -23,7 +23,7 @@ export class CreateGroupHandler implements ICommandHandler<CreateGroupCommand> {
 		});
 
 		const { id: groupId } = group;
-		await this.groupRepository.joinGroup(groupId, command.context.userId, command.context.connectionId);
+		await this.groupRepository.joinGroup(groupId, command.context.userId);
 
 		return group;
 	}

@@ -17,6 +17,6 @@ export class JoinGroupHandler implements ICommandHandler<JoinGroupCommand> {
 
 	async execute(command: JoinGroupCommand) {
 		this.logger.info('Join group', { command });
-		return this.groupRepository.joinGroup(command.groupId, command.context.userId, command.context.connectionId);
+		return this.groupRepository.joinGroup(command.groupId, command.context.userId);
 	}
 }

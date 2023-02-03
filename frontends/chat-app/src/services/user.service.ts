@@ -12,7 +12,10 @@ export class UserService {
 			const user: any = jwtDecode(token);
 			return {
 				token,
-				user,
+				user: {
+					...user,
+					id: user.sub,
+				},
 			};
 		} catch (err) {
 			return null;

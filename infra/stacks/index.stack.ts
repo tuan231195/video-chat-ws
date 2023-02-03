@@ -50,6 +50,7 @@ export function IndexStack({ stack }: StackContext) {
 			groupId: 'string',
 			userId: 'string',
 			id: 'string',
+			createdAt: 'string',
 		},
 		globalIndexes: {
 			user_id_index: {
@@ -58,6 +59,7 @@ export function IndexStack({ stack }: StackContext) {
 			},
 			group_id_index: {
 				partitionKey: 'groupId',
+				sortKey: 'createdAt',
 				projection: 'all',
 			},
 		},

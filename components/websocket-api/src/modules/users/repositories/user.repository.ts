@@ -3,6 +3,7 @@ import { BaseRepository, DynamoDbService } from '@vdtn359/dynamodb-nestjs-module
 import { CONFIG_TOKEN, RequestLogger } from '@vdtn359/nestjs-bootstrap';
 import type { Config } from 'src/config';
 import { User } from 'src/modules/users/domains';
+import { uniq } from 'lodash';
 
 @Injectable()
 export class UserRepository extends BaseRepository {
@@ -18,20 +19,18 @@ export class UserRepository extends BaseRepository {
 		this.userTable = table!;
 	}
 
-	async upsertUser(user: User) {
-		this.logger.info(`Created new user`, {
+	async syncUser(user: User, connectionId: string) {
+		this.logger.info(`Upsert new user`, {
 			user,
 		});
-		const { Item: existingUser } = await this.dynamodbService.documentClient.get({
-			Key: {
-				id: user.id,
-			},
-			TableName: this.userTable,
+		const existingUser = await this.dynamodbService.get(this.userTable, {
+			id: user.id,
 		});
 		return this.dynamodbService.putItem(this.userTable, {
 			...existingUser,
 			...user,
 			lastActive: new Date().toISOString(),
+			connections: uniq((existingUser?.connections ?? []).concat(connectionId)),
 			...(!existingUser
 				? {
 						createdAt: new Date().toISOString(),

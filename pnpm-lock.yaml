@@ -149,6 +149,7 @@ importers:
             react-redux: ^8.0.5
             react-scripts: 5.0.1
             rxjs: ^7.8.0
+            timeago.js: ^4.0.2
             typescript: ^4.9.4
             uuid: ^9.0.0
             web-vitals: ^2.1.4
@@ -169,6 +170,7 @@ importers:
             react-redux: 8.0.5_r7hvvldj6g2s5chfsdsflfq664
             react-scripts: 5.0.1_6ujtt3mftzqajtglqcnfc5zihu
             rxjs: 7.8.0
+            timeago.js: 4.0.2
             typescript: 4.9.4
             uuid: 9.0.0
             web-vitals: 2.1.4
@@ -5605,7 +5607,7 @@ packages:
             '@nestjs/common': '>=7.0.0'
             '@nestjs/core': '>=7.0.0'
         dependencies:
-            '@nestjs/common': 9.2.1_brdl4igdapn74yom6zim4xl3pq
+            '@nestjs/common': 9.2.1_mnr6j2del53muneqly5h4y27ai
             '@nestjs/core': 9.2.1_b4pxbpa7chblgbyake5iz5rdmu
         dev: false
 
@@ -5684,7 +5686,7 @@ packages:
             '@nestjs/websockets':
                 optional: true
         dependencies:
-            '@nestjs/common': 9.2.1_brdl4igdapn74yom6zim4xl3pq
+            '@nestjs/common': 9.2.1_mnr6j2del53muneqly5h4y27ai
             '@nuxtjs/opencollective': 0.3.2
             fast-safe-stringify: 2.1.1
             iterare: 1.2.1
@@ -8258,7 +8260,7 @@ packages:
             reflect-metadata: ^0.1.13
         dependencies:
             '@nestjs-steroids/async-context': 2.0.0_hjcqpoaebdr7gdo5hgc22hthbe
-            '@nestjs/common': 9.2.1_brdl4igdapn74yom6zim4xl3pq
+            '@nestjs/common': 9.2.1_mnr6j2del53muneqly5h4y27ai
             '@nestjs/core': 9.2.1_b4pxbpa7chblgbyake5iz5rdmu
             '@types/convict': 6.1.1
             convict: 6.2.4
@@ -24164,6 +24166,13 @@ packages:
         resolution:
             {
                 integrity: sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==,
+            }
+        dev: false
+
+    /timeago.js/4.0.2:
+        resolution:
+            {
+                integrity: sha512-a7wPxPdVlQL7lqvitHGGRsofhdwtkoSXPGATFuSOA2i1ZNQEPLrGnj68vOp2sOJTCFAQVXPeNMX/GctBaO9L2w==,
             }
         dev: false
 

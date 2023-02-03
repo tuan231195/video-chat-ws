@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { DynamoDbService } from '@vdtn359/dynamodb-nestjs-module';
+import { BaseRepository, DynamoDbService } from '@vdtn359/dynamodb-nestjs-module';
 import { CONFIG_TOKEN, RequestLogger } from '@vdtn359/nestjs-bootstrap';
 import type { Config } from 'src/config';
 import { Message } from 'src/modules/messages/domains/entities/message';
@@ -7,7 +7,7 @@ import { newId } from 'src/utils/id';
 import { MessageEntity } from 'src/modules/messages/entities';
 
 @Injectable()
-export class MessageRepository {
+export class MessageRepository extends BaseRepository {
 	private readonly messagesTable: string;
 
 	constructor(
@@ -15,7 +15,9 @@ export class MessageRepository {
 		@Inject(CONFIG_TOKEN) private readonly config: Config,
 		private readonly logger: RequestLogger
 	) {
-		this.messagesTable = this.config.get('MESSAGES_TABLE')!;
+		const table = config.get('MESSAGES_TABLE')!;
+		super(dynamodbService, table, [['id']]);
+		this.messagesTable = table;
 	}
 
 	createMessage(groupId: string, userId: string, message: Message): Promise<MessageEntity> {

@@ -3,13 +3,13 @@ import { createSlice } from '@reduxjs/toolkit';
 import { UserGroup } from 'src/types/group';
 import { loadGroups, selectGroup } from '../actions/group';
 
-export interface InitialState {
+export interface State {
 	selectedGroup: UserGroup | null;
 	loading: boolean;
 	items: UserGroup[];
 }
 
-const initialState: InitialState = {
+const initialState: State = {
 	selectedGroup: null,
 	loading: false,
 	items: [],

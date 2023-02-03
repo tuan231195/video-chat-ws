@@ -21,6 +21,34 @@ export class DynamoDbService {
 		});
 	}
 
+	async get(tableName: string, key: Record<string, any>): Promise<any> {
+		const { Item } = await this.documentClient.get({
+			Key: key,
+			TableName: tableName,
+		});
+
+		return Item;
+	}
+
+	async upsert(tableName: string, key: Record<string, any>, item: Record<string, any>) {
+		const { Item: existingItem } = await this.documentClient.get({
+			TableName: tableName,
+			Key: key,
+		});
+		const { Attributes: oldItem } = await this.documentClient.put({
+			TableName: tableName,
+			Item: {
+				...existingItem,
+				...item,
+			},
+			ReturnValues: 'ALL_OLD',
+		});
+		return {
+			...oldItem,
+			...item,
+		};
+	}
+
 	async putItem(tableName: string, item: Record<string, any>) {
 		const { Attributes: oldItem } = await this.documentClient.put({
 			TableName: tableName,

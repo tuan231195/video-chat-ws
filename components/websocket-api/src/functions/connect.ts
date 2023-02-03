@@ -22,7 +22,7 @@ export const handler = async (event: APIGatewayProxyWithLambdaAuthorizerEvent<an
 		const userRepository = app.get(UserRepository);
 		const authorizedUser = event.requestContext.authorizer?.user as string;
 		if (authorizedUser) {
-			await userRepository.upsertUser(JSON.parse(authorizedUser));
+			await userRepository.syncUser(JSON.parse(authorizedUser), event.requestContext.connectionId!);
 		}
 	});
 };

@@ -26,7 +26,10 @@ export class SocketService {
 					tap({
 						error: Logger.error,
 					}),
-					catchError(() => EMPTY)
+					catchError((err) => {
+						Logger.error('Socket error', err);
+						return EMPTY;
+					})
 				)
 				.subscribe(this.messagesSubject$);
 		}
@@ -55,7 +58,7 @@ export class SocketService {
 		return lastValueFrom(
 			this.messagesSubject$.pipe(
 				filter((response: any) => response.correlationId === correlationId),
-				timeout(5000),
+				timeout(10000),
 				take(1),
 				concatMap((response: any) => {
 					if (response.action === `${message.action}:succeeded`) {
@@ -69,5 +72,9 @@ export class SocketService {
 
 	close() {
 		this.socket$.complete();
+	}
+
+	subscribe(subscriber: (value: any) => void) {
+		this.messagesSubject$.subscribe(subscriber);
 	}
 }

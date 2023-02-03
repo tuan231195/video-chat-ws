@@ -1,9 +1,10 @@
-import { List } from 'antd';
+import { Avatar, List } from 'antd';
 import React from 'react';
 import { useAppDispatch, useAppSelector } from 'src/store/store';
 import { UserGroup } from 'src/types/group';
 import { selectGroup } from 'src/store/actions/group';
 import { CenterSpin } from 'src/components/common/CenterSpin';
+import { generateAvatar } from 'src/lib/common/avatar';
 import styles from './GroupList.module.css';
 
 export const GroupList = () => {
@@ -27,7 +28,10 @@ export const GroupList = () => {
 						className={`${styles.group__item} ${isSelected ? styles['group__item--selected'] : ''}`}
 						key={item.groupId}
 						onClick={() => onSelectGroup(item)}>
-						<List.Item.Meta title={item.group.name} />
+						<List.Item.Meta
+							avatar={<Avatar src={generateAvatar(item.groupId)} />}
+							title={item.group.name}
+						/>
 					</List.Item>
 				);
 			}}

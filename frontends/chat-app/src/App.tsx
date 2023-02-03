@@ -1,11 +1,10 @@
 import React from 'react';
 import 'antd/dist/reset.css';
-import { userService } from 'src/services';
+import { store, userService } from 'src/services';
 import { SessionContext } from 'src/context/session';
 import { ConfigProvider } from 'antd';
 import { Main } from 'src/Main';
 import { Provider } from 'react-redux';
-import { store } from 'src/store/store';
 
 function App() {
 	const session = userService.getSession();

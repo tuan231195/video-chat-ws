@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
 import { Layout, theme } from 'antd';
-import { MessageOutlined } from '@ant-design/icons';
 import { loadGroups } from 'src/store/actions/group';
 import { useAppDispatch } from 'src/store/store';
-import Title from 'antd/es/typography/Title';
+import { Header } from 'src/components/navigation/Header';
+import { Messages } from 'src/components/messages/Messages';
 import { GroupList } from './components/groups/GroupList';
 
-const { Header, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 
 export function Main() {
 	const {
-		token: { colorBgContainer, colorPrimary, colorWhite },
+		token: { colorBgContainer, colorBorder },
 	} = theme.useToken();
 
 	const dispatch = useAppDispatch();
@@ -19,18 +19,20 @@ export function Main() {
 	}, []);
 
 	return (
-		<Layout style={{ minHeight: '100vh' }}>
-			<Header style={{ background: colorPrimary, display: 'flex', alignItems: 'center' }}>
-				<MessageOutlined style={{ color: colorWhite, fontSize: 24, marginRight: '5px' }} />
-				<Title level={5} style={{ color: colorWhite, margin: 0 }}>
-					Messenger
-				</Title>
-			</Header>
-			<Layout>
-				<Sider style={{ background: colorBgContainer }}>
+		<Layout style={{ minHeight: '100vh', maxHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+			<Header />
+			<Layout style={{ flexGrow: 1 }}>
+				<Sider
+					width={'240px'}
+					style={{
+						background: colorBgContainer,
+						borderRight: `1px solid ${colorBorder}`,
+					}}>
 					<GroupList />
 				</Sider>
-				<Content>Content</Content>
+				<Content style={{ background: colorBgContainer }}>
+					<Messages />
+				</Content>
 			</Layout>
 		</Layout>
 	);
