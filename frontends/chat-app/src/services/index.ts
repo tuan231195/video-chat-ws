@@ -8,5 +8,5 @@ export * from './logger';
 export const userService = new UserService();
 export const socketService = new SocketService(userService);
 
-export const store = createStore(socketService);
-export const socketListenerService = new SocketListenerService(store, socketService);
+export const store = createStore(socketService, userService);
+export const socketListenerService = new SocketListenerService(store, socketService, userService);

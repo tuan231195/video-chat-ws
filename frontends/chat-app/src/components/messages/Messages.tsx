@@ -12,7 +12,7 @@ import styles from './Messages.module.css';
 
 export const Messages = () => {
 	const { loading, items } = useAppSelector((store) => store.messages);
-	const { selectedGroup } = useAppSelector((store) => store.groups);
+	const { selectedGroupId } = useAppSelector((store) => store.groups);
 	const { user } = useSession();
 	const listRef = useRef<HTMLDivElement>(null as any);
 	const [message, setMessage] = useState('');
@@ -31,7 +31,7 @@ export const Messages = () => {
 		dispatch(
 			sendMessage({
 				message,
-				groupId: selectedGroup?.groupId ?? '',
+				groupId: selectedGroupId!,
 			})
 		);
 		setMessage('');

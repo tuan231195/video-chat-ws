@@ -23,7 +23,7 @@ export function Main() {
 			<Header />
 			<Layout style={{ flexGrow: 1 }}>
 				<Sider
-					width={'240px'}
+					width={'300px'}
 					style={{
 						background: colorBgContainer,
 						borderRight: `1px solid ${colorBorder}`,

@@ -20,7 +20,10 @@ export class MessageService {
 				await Promise.all(
 					groupUsers.map(async (groupUser) => {
 						const user = await this.userRepository.load({ id: groupUser.userId });
-						return user.connections ?? [];
+						return (user.connections ?? []).map((connectionId: string) => ({
+							connectionId,
+							userId: groupUser.userId,
+						}));
 					})
 				)
 			).flat()
@@ -30,8 +33,8 @@ export class MessageService {
 		for (const batch of batches) {
 			// eslint-disable-next-line no-await-in-loop
 			await Promise.all(
-				batch.map(async (connectionId) =>
-					this.connectionService.postToConnection(connectionId, {
+				batch.map(async ({ connectionId, userId }) =>
+					this.connectionService.postToConnection(connectionId, userId, {
 						action: 'message:created',
 						result: {
 							message,

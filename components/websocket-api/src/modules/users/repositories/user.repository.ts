@@ -38,4 +38,18 @@ export class UserRepository extends BaseRepository {
 				: null),
 		});
 	}
+
+	async removeConnection(userId: any, connectionId: string) {
+		const existingUser = await this.dynamodbService.get(this.userTable, {
+			id: userId,
+		});
+		if (!existingUser) {
+			return;
+		}
+		this.logger.info(`Removing user ${userId} connection ${connectionId}`);
+		await this.dynamodbService.putItem(this.userTable, {
+			...existingUser,
+			connections: existingUser.connections?.filter((id: string) => connectionId !== id) ?? [],
+		});
+	}
 }

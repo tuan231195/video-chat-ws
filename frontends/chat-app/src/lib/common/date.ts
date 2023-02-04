@@ -1,9 +1,14 @@
-import { format } from 'timeago.js';
+import TimeAgo, { FormatStyleName } from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en';
 
-export const timeAgo = (val: string | number) => {
+TimeAgo.addDefaultLocale(en);
+
+const timeAgoInstance = new TimeAgo('en-US');
+
+export const timeAgo = (val: string | number, format?: FormatStyleName) => {
 	const date = new Date(val);
 	if (Number.isNaN(date.getTime())) {
-		return format(new Date());
+		return timeAgoInstance.format(new Date(), format);
 	}
-	return format(date);
+	return timeAgoInstance.format(date, format);
 };

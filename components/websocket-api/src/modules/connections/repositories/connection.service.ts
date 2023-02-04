@@ -12,7 +12,7 @@ export class ConnectionService {
 		private readonly connectionRepository: ConnectionRepository
 	) {}
 
-	async postToConnection(connectionId: string, data: Record<string, any>) {
+	async postToConnection(connectionId: string, userId: string, data: Record<string, any>) {
 		this.logger.info(`Posting to connection ${connectionId}`, data);
 		const { stage, domainName } = this.asyncContext.get('context');
 		const apiGatewayService = getApiGateway(stage, domainName);
@@ -23,7 +23,7 @@ export class ConnectionService {
 			});
 		} catch (err: any) {
 			if (err instanceof GoneException) {
-				await this.connectionRepository.destroyConnection(connectionId);
+				await this.connectionRepository.destroyConnection(connectionId, userId);
 				return;
 			}
 			throw err;

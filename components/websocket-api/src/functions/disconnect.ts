@@ -13,6 +13,9 @@ export const handler = async (event: APIGatewayProxyEvent, context: Context) => 
 		logger.debug('Disconnection event', { event });
 
 		const connectionRepository = app.get(ConnectionRepository);
-		await connectionRepository.destroyConnection(event.requestContext.connectionId!);
+		await connectionRepository.destroyConnection(
+			event.requestContext.connectionId!,
+			event.requestContext.authorizer?.principalId
+		);
 	});
 };

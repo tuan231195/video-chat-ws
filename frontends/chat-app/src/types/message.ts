@@ -2,7 +2,7 @@ import { User } from 'src/types/user';
 
 export interface Message {
 	body: string;
-	groupId: number;
+	groupId: string;
 
 	id: string;
 

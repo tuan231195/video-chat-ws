@@ -34,6 +34,10 @@ export class ListMessagesHandler implements ICommandHandler<ListMessagesCommand>
 
 		await this.groupHelper.checkGroupUser(command.groupId, command.context.userId);
 
+		await this.groupRepository.updateGroupUser(command.groupId, command.context.userId, {
+			lastAccess: new Date().toISOString(),
+		});
+
 		const { messages, lastEvaluatedKey } = await this.messageRepository.listMessages(
 			command.groupId,
 			command.lastEvaluatedKey

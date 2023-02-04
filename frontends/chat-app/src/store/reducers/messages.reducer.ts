@@ -4,6 +4,7 @@ import { loadGroupChat } from 'src/store/actions/message';
 import { Message } from 'src/types/message';
 
 export interface State {
+	groupId: string | null;
 	loading: boolean;
 	fetching: boolean;
 	items: Message[];
@@ -11,6 +12,7 @@ export interface State {
 }
 
 const initialState: State = {
+	groupId: null,
 	loading: true,
 	fetching: false,
 	items: [],
@@ -21,19 +23,25 @@ export const messagesReducer = createSlice({
 	name: 'messages',
 	initialState,
 	reducers: {
-		messageCreated: (state: State, action: PayloadAction<Message>) => {
-			state.items.push(action.payload);
+		messageCreated: (state: State, action: PayloadAction<Message & { isCurrentUser: boolean }>) => {
+			if (action.payload.groupId === state.groupId) {
+				state.items.push(action.payload);
+			}
 		},
 	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(loadGroupChat.fulfilled, (state, action) => {
+				state.loading = false;
+				if (!action.payload) {
+					return;
+				}
 				const { messages: items, lastEvaluatedKey } = action.payload;
 				state.items = items.reverse();
 				state.lastKey = lastEvaluatedKey ?? null;
-				state.loading = false;
 			})
-			.addCase(loadGroupChat.pending, (state) => {
+			.addCase(loadGroupChat.pending, (state, action) => {
+				state.groupId = action.meta.arg;
 				state.items = [];
 				state.loading = true;
 			})

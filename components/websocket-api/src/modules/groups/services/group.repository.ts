@@ -91,6 +91,18 @@ export class GroupRepository extends BaseRepository {
 		}) as Promise<GroupUserEntity[]>;
 	}
 
+	async updateGroupUser(groupId: string, userId: string, props: Record<string, any>) {
+		return this.dynamodbService.upsert(
+			this.groupUsersTable,
+			{ groupId, userId },
+			{
+				...props,
+				groupId,
+				userId,
+			}
+		);
+	}
+
 	async updateGroup(groupId: string, props: Record<string, any>) {
 		return this.dynamodbService.upsert(
 			this.groupTable,

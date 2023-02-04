@@ -62,10 +62,11 @@ export class DynamoDbService {
 	}
 
 	async destroyItem(tableName: string, key: Record<string, any>) {
-		await this.documentClient.delete({
+		const { Attributes: Item } = await this.documentClient.delete({
 			TableName: tableName,
 			Key: key,
 		});
+		return Item;
 	}
 
 	async batchGet(tableName: string, keys: Record<string, any>[]) {

@@ -4,13 +4,14 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { errorMiddleware } from 'src/store/middlewares/error';
 import { messagesReducer } from 'src/store/reducers/messages.reducer';
 import { SocketService } from 'src/services/socket.service';
+import { UserService } from 'src/services/user.service';
 
 const reducers = combineReducers({
 	groups: groupsReducer.reducer,
 	messages: messagesReducer.reducer,
 });
 
-export function createStore(socketService: SocketService) {
+export function createStore(socketService: SocketService, userService: UserService) {
 	return configureStore({
 		devTools: true,
 		reducer: reducers,
@@ -19,6 +20,7 @@ export function createStore(socketService: SocketService) {
 				thunk: {
 					extraArgument: {
 						socketService,
+						userService,
 					},
 				},
 			}).concat(errorMiddleware.middleware),

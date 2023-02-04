@@ -1,14 +1,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { GroupRepository } from 'src/modules/groups/services';
-import { MessageRepository } from 'src/modules/messages/services';
 import { ErrorCodes } from 'src/utils/error-codes';
+import { MessageHelper } from 'src/modules/command/services/commands/messages/message.helper';
 
 @Injectable()
 export class GroupHelper {
-	constructor(
-		private readonly groupRepository: GroupRepository,
-		private readonly messageRepository: MessageRepository
-	) {}
+	constructor(private readonly groupRepository: GroupRepository, private readonly messageHelper: MessageHelper) {}
 
 	async loadDetails(groupId: string) {
 		const group = await this.groupRepository.load({
@@ -20,7 +17,7 @@ export class GroupHelper {
 
 		return {
 			...group,
-			lastMessage: group.lastMessageId ? await this.messageRepository.load({ id: group.lastMessageId }) : null,
+			lastMessage: group.lastMessageId ? await this.messageHelper.loadDetails(group.lastMessageId) : null,
 		};
 	}
 

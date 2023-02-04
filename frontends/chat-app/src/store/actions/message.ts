@@ -5,11 +5,19 @@ const CREATE_MESSAGE = 'message:create';
 
 export const loadGroupChat = createAppAsyncThunk(
 	'messages/load',
-	async (groupId: string, { extra: { socketService } }) =>
-		socketService.sendMessageAwaitResponse<any>({
+	async (groupId: string, { extra: { socketService }, getState }) => {
+		const messages = socketService.sendMessageAwaitResponse<any>({
 			action: LIST_MESSAGES,
 			groupId,
-		})
+		});
+		const {
+			messages: { groupId: currentGroupId },
+		} = getState();
+		if (currentGroupId === groupId) {
+			return messages;
+		}
+		return undefined;
+	}
 );
 
 export const sendMessage = createAppAsyncThunk(

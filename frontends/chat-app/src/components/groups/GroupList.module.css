@@ -1,7 +1,23 @@
-.group__item {
+.group_item {
 	cursor: pointer;
 }
 
-.group__item--selected {
+.group_item--selected {
 	background: #eaf3ff;
+}
+
+.group_item--unread :global(.ant-list-item-meta-description) {
+	color: #00b96b !important;
+}
+
+.group_item_icon {
+	width: 5px;
+	height: 5px;
+	display: inline-block;
+	border-radius: 100%;
+	transform: translateX(-10px);
+}
+
+.group_item_icon--unread {
+	background: #00b96b;
 }
