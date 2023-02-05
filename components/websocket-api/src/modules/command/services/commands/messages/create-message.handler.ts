@@ -43,6 +43,11 @@ export class CreateMessageHandler implements ICommandHandler<CreateMessageComman
 			command.context.userId,
 			command.message
 		);
+
+		await this.groupRepository.updateGroupUser(command.groupId, command.context.userId, {
+			lastAccess: new Date().toISOString(),
+		});
+
 		await this.groupRepository.updateGroup(command.groupId, {
 			lastMessageId: message.id,
 		});

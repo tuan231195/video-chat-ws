@@ -31,3 +31,20 @@ export const sendMessage = createAppAsyncThunk(
 			},
 		})
 );
+
+export const loadMoreMessages = createAppAsyncThunk(
+	'messages/loadMore',
+	async ({ groupId }: { groupId: string }, { extra: { socketService }, getState }) => {
+		const {
+			messages: { lastKey },
+		} = getState();
+		if (!lastKey) {
+			return undefined;
+		}
+		return socketService.sendMessageAwaitResponse<any>({
+			action: LIST_MESSAGES,
+			groupId,
+			lastEvaluatedKey: lastKey,
+		});
+	}
+);

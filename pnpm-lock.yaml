@@ -148,6 +148,7 @@ importers:
             jwt-decode: ^3.1.2
             react: ^18.2.0
             react-dom: ^18.2.0
+            react-infinite-scroll-component: ^6.1.0
             react-redux: ^8.0.5
             react-scripts: 5.0.1
             rxjs: ^7.8.0
@@ -170,6 +171,7 @@ importers:
             jwt-decode: 3.1.2
             react: 18.2.0
             react-dom: 18.2.0_react@18.2.0
+            react-infinite-scroll-component: 6.1.0_react@18.2.0
             react-redux: 8.0.5_r7hvvldj6g2s5chfsdsflfq664
             react-scripts: 5.0.1_6ujtt3mftzqajtglqcnfc5zihu
             rxjs: 7.8.0
@@ -21876,6 +21878,18 @@ packages:
             }
         dev: false
 
+    /react-infinite-scroll-component/6.1.0_react@18.2.0:
+        resolution:
+            {
+                integrity: sha512-SQu5nCqy8DxQWpnUVLx7V7b7LcA37aM7tvoWjTLZp1dk6EJibM5/4EJKzOnl07/BsM1Y40sKLuqjCwwH/xV0TQ==,
+            }
+        peerDependencies:
+            react: '>=16.0.0'
+        dependencies:
+            react: 18.2.0
+            throttle-debounce: 2.3.0
+        dev: false
+
     /react-is/16.13.1:
         resolution:
             {
@@ -24144,6 +24158,14 @@ packages:
             {
                 integrity: sha512-WKexMoJj3vEuK0yFEapj8y64V0A6xcuPuK9Gt1d0R+dzCSJc0lHqQytAbSB4cDAK0dWh4T0E2ETkoLE2WZ41OQ==,
             }
+        dev: false
+
+    /throttle-debounce/2.3.0:
+        resolution:
+            {
+                integrity: sha512-H7oLPV0P7+jgvrk+6mwwwBDmxTaxnu9HMXmloNLXwnNO0ZxZ31Orah2n8lU1eMPvsaowP2CX+USCgyovXfdOFQ==,
+            }
+        engines: { node: '>=8' }
         dev: false
 
     /throttle-debounce/5.0.0:

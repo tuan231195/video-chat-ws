@@ -20,9 +20,11 @@ export class MessageHelper {
 		} else {
 			loadedMessage = idOrMessage;
 		}
+		const user = await this.userRepository.load({ id: loadedMessage.userId });
+		delete user.connections;
 		return {
 			...loadedMessage,
-			user: await this.userRepository.load({ id: loadedMessage.userId }),
+			user,
 		};
 	}
 }

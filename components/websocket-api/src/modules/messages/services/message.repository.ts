@@ -39,7 +39,7 @@ export class MessageRepository extends BaseRepository {
 	): Promise<{ messages: MessageEntity[]; lastEvaluatedKey: any }> {
 		const { Items = [], LastEvaluatedKey } = await this.dynamodbService.query({
 			tableName: this.messagesTable,
-			limit: 50,
+			limit: 20,
 			indexName: 'group_id_index',
 			key: {
 				groupId,

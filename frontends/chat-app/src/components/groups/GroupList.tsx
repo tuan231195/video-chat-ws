@@ -1,4 +1,4 @@
-import { Avatar, List } from 'antd';
+import { Avatar, List, Typography } from 'antd';
 import React from 'react';
 import { useAppDispatch, useAppSelector } from 'src/store/store';
 import { UserGroup } from 'src/types/group';
@@ -8,6 +8,8 @@ import { generateAvatar } from 'src/lib/common/avatar';
 import classnames from 'classnames';
 import { timeAgo } from 'src/lib/common/date';
 import styles from './GroupList.module.css';
+
+const { Text } = Typography;
 
 export const GroupList = () => {
 	const { loading, items, selectedGroupId } = useAppSelector((store) => store.groups);
@@ -31,8 +33,8 @@ export const GroupList = () => {
 				return (
 					<List.Item
 						className={classnames(styles.group_item, {
-							[styles['group_item--selected']]: isSelected,
-							[styles['group_item--unread']]: isUnread,
+							[styles['group-item--selected']]: isSelected,
+							[styles['group-item--unread']]: isUnread,
 						})}
 						key={item.groupId}
 						onClick={() => onSelectGroup(item)}>
@@ -41,16 +43,20 @@ export const GroupList = () => {
 								<span>
 									<i
 										className={classnames(styles.group_item_icon, {
-											[styles['group_item_icon--unread']]: isUnread,
+											[styles['group-item-icon--unread']]: isUnread,
 										})}
 									/>
 									<Avatar src={generateAvatar(item.groupId)} />
 								</span>
 							}
-							title={item.group.name}
-							description={item.group.lastMessage?.body ?? ''}
+							title={<Text ellipsis>{item.group.name}</Text>}
+							description={<Text ellipsis>{item.group.lastMessage?.body ?? ''}</Text>}
 						/>
-						{!!item.group.lastMessage && <div>{timeAgo(item.group.lastMessage.createdAt, 'mini')} </div>}
+						{!!item.group.lastMessage && (
+							<div className={styles['group-item-time']}>
+								{timeAgo(item.group.lastMessage.createdAt, 'mini')}{' '}
+							</div>
+						)}
 					</List.Item>
 				);
 			}}
