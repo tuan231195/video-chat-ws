@@ -32,7 +32,7 @@ export const GroupList = () => {
 					(item.group.lastMessage && new Date(item.group.lastMessage.createdAt) > new Date(item.lastAccess));
 				return (
 					<List.Item
-						className={classnames(styles.group_item, {
+						className={classnames(styles['group-item'], {
 							[styles['group-item--selected']]: isSelected,
 							[styles['group-item--unread']]: isUnread,
 						})}

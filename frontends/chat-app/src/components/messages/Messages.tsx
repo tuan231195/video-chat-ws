@@ -1,23 +1,33 @@
-import { Avatar, Empty, Input, Space, Spin } from 'antd';
+import { Avatar, Empty, Input, Layout, Space, Spin, theme, Typography } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/store/store';
 import { CenterSpin } from 'src/components/common/CenterSpin';
 import { useSession } from 'src/context/session';
-import Text from 'antd/es/typography/Text';
 import { generateAvatar } from 'src/lib/common/avatar';
 import { timeAgo } from 'src/lib/common/date';
-import { SendOutlined } from '@ant-design/icons';
+import { SendOutlined, VideoCameraTwoTone } from '@ant-design/icons';
 import { loadMoreMessages, sendMessage } from 'src/store/actions/message';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { useSelectedGroup } from 'src/store/selectors/group';
+import { VideoCallModal } from 'src/components/messages/VideoCallModal';
 import styles from './Messages.module.css';
+
+const { Title, Text } = Typography;
+
+const { Header: AppHeader } = Layout;
 
 export const Messages = () => {
 	const { loading, items, lastKey } = useAppSelector((store) => store.messages);
 	const { selectedGroupId } = useAppSelector((store) => store.groups);
+	const selectedGroup = useSelectedGroup();
 	const { user } = useSession();
 	const listRef = useRef<HTMLDivElement>(null as any);
 	const [message, setMessage] = useState('');
+	const [showVideoModal, setShowVideoModal] = useState(false);
 	const dispatch = useAppDispatch();
+	const {
+		token: { colorPrimary },
+	} = theme.useToken();
 
 	const scrollToBottom = () => {
 		if (listRef.current) {
@@ -43,6 +53,14 @@ export const Messages = () => {
 			})
 		);
 		scrollToBottom();
+	};
+
+	const onVideoCall = () => {
+		setShowVideoModal(true);
+	};
+
+	const onCloseVideoCall = () => {
+		setShowVideoModal(false);
 	};
 
 	const loadMore = async () => {
@@ -113,11 +131,32 @@ export const Messages = () => {
 		);
 	}
 
+	const groupHeader = () =>
+		!!selectedGroup && (
+			<AppHeader className={styles['group-header']}>
+				<Space direction={'horizontal'} size={10} align={'center'}>
+					<Avatar src={generateAvatar(selectedGroup.groupId)} />
+					<Title level={5} style={{ margin: 0 }}>
+						{selectedGroup.group.name}
+					</Title>
+				</Space>
+				<VideoCameraTwoTone
+					twoToneColor={colorPrimary}
+					style={{ fontSize: 24, cursor: 'pointer' }}
+					onClick={onVideoCall}
+				/>
+			</AppHeader>
+		);
+
 	return (
 		<div className={styles['message-container']}>
 			{loading && <CenterSpin />}
 			{!loading && (
 				<>
+					{showVideoModal && selectedGroup && (
+						<VideoCallModal group={selectedGroup} onClose={onCloseVideoCall} />
+					)}
+					{groupHeader()}
 					{messageList()}
 					{messageBox()}
 				</>

@@ -9,6 +9,7 @@ export function Header() {
 	const {
 		token: { colorPrimary, colorWhite },
 	} = theme.useToken();
+
 	return (
 		<AppHeader style={{ background: colorPrimary, display: 'flex', alignItems: 'center' }}>
 			<MessageOutlined style={{ color: colorWhite, fontSize: 24, marginRight: '5px' }} />

@@ -23,6 +23,19 @@
 	align-self: center;
 }
 
+.group-header {
+	padding-left: 20px !important;
+	background-color: white !important;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+.group-header-title {
+	margin: 0 0 0 10px !important;
+}
+
 .message-list {
 	display: flex;
 	flex-direction: column-reverse;

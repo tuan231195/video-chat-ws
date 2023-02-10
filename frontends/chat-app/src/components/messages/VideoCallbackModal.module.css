@@ -1,0 +1,40 @@
+.video {
+	max-width: 60%;
+	max-height: 90%;
+}
+
+.video-header {
+	display: flex;
+	justify-content: space-between;
+	margin-right: 80px;
+	padding-bottom: 15px;
+}
+
+.video-control {
+	font-size: 24px;
+	color: #00b96b;
+	cursor: pointer;
+}
+
+.video-control--disabled {
+	color: red;
+}
+
+.video-control:not(:last-child) {
+	margin-right: 30px;
+}
+
+.modal {
+	width: 80vw !important;
+	height: 80vh !important;
+}
+
+.modal :global(.ant-modal-content) {
+	width: 100%;
+	height: 100%;
+}
+
+.modal :global(.ant-modal-body) {
+	width: 100%;
+	height: 82%;
+}

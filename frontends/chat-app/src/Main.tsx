@@ -14,6 +14,7 @@ export function Main() {
 	} = theme.useToken();
 
 	const dispatch = useAppDispatch();
+
 	useEffect(() => {
 		dispatch(loadGroups());
 	}, []);
