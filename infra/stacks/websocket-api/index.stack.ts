@@ -9,7 +9,15 @@ export function IndexStack({ stack }: StackContext) {
 	stack.setDefaultFunctionProps({
 		srcPath: 'components/websocket-api/dist',
 	});
-	const { connectionTable, messageTable, groupTable, userTable, groupUsersTable } = use(RootStack);
+	const {
+		connectionTable,
+		messageTable,
+		groupTable,
+		userTable,
+		groupUsersTable,
+		videoCallTable,
+		videoCallUserTable,
+	} = use(RootStack);
 
 	const connectionsTableConfig = new Config.Parameter(stack, 'CONNECTIONS_TABLE', {
 		value: connectionTable.tableName,
@@ -31,6 +39,14 @@ export function IndexStack({ stack }: StackContext) {
 		value: groupUsersTable.tableName,
 	});
 
+	const videoCallTableConfig = new Config.Parameter(stack, 'VIDEO_CALL_TABLE', {
+		value: videoCallTable.tableName,
+	});
+
+	const videoCallUsersTableConfig = new Config.Parameter(stack, 'VIDEO_CALL_USERS_TABLE', {
+		value: videoCallUserTable.tableName,
+	});
+
 	const jwtSecret = new Config.Secret(stack, 'JWT_SECRET');
 
 	const bindingConstructs = [
@@ -44,6 +60,10 @@ export function IndexStack({ stack }: StackContext) {
 		groupUsersTable,
 		messageTable,
 		connectionTable,
+		videoCallTable,
+		videoCallUserTable,
+		videoCallTableConfig,
+		videoCallUsersTableConfig,
 		jwtSecret,
 	];
 

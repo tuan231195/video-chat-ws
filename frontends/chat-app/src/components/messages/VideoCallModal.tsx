@@ -6,7 +6,7 @@ import { Logger } from 'src/services';
 
 import { AudioMutedOutlined, AudioOutlined, VideoCameraAddOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
-import styles from './VideoCallbackModal.module.css';
+import styles from './VideoCallModal.module.css';
 
 const { Header: AppHeader } = Layout;
 

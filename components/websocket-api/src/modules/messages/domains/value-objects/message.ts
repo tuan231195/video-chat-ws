@@ -1,6 +1,4 @@
-export class MessageEntity {
-	id!: string;
-
+export class MessageDto {
 	userId!: string;
 
 	groupId!: string;
@@ -8,6 +6,4 @@ export class MessageEntity {
 	body!: string;
 
 	type!: 'message' | 'video-call';
-
-	createdAt!: Date;
 }

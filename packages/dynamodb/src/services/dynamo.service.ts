@@ -1,5 +1,5 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocument, QueryCommandOutput } from '@aws-sdk/lib-dynamodb';
+import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
 import { chunk, uniqBy } from 'lodash';
 import { Inject, Injectable } from '@nestjs/common';
 import { CONFIG_TOKEN } from '@vdtn359/nestjs-bootstrap';
@@ -39,6 +39,7 @@ export class DynamoDbService {
 			TableName: tableName,
 			Item: {
 				...existingItem,
+				...key,
 				...item,
 			},
 			ReturnValues: 'ALL_OLD',
@@ -102,20 +103,20 @@ export class DynamoDbService {
 		const allItems: any[] = [];
 		do {
 			// eslint-disable-next-line no-await-in-loop
-			const result: QueryCommandOutput = await this.query({
+			const result: any = await this.query({
 				tableName,
 				key: keyObject,
 				indexName,
 				...(lastEvaluatedKey && { lastEvaluatedKey }),
 			});
-			lastEvaluatedKey = result.LastEvaluatedKey;
-			allItems.push(...(result.Items || []));
+			lastEvaluatedKey = result.lastEvaluatedKey;
+			allItems.push(...(result.items || []));
 		} while (lastEvaluatedKey);
 
 		return allItems;
 	}
 
-	query({
+	async query({
 		tableName,
 		key: keyObject,
 		indexName,
@@ -144,7 +145,7 @@ export class DynamoDbService {
 			{}
 		);
 		const keyConditionExpression = keys.map((key) => `#${key} = :${key}`).join(' AND ');
-		return this.documentClient.query({
+		const { Items = [], LastEvaluatedKey: nextEvaluatedKey } = await this.documentClient.query({
 			TableName: tableName,
 			ExpressionAttributeValues: expressionAttributesValues,
 			ExpressionAttributeNames: expressionAttributesNames,
@@ -154,6 +155,11 @@ export class DynamoDbService {
 			Limit: limit,
 			ExclusiveStartKey: lastEvaluatedKey,
 		});
+
+		return {
+			items: Items,
+			lastEvaluatedKey: nextEvaluatedKey,
+		};
 	}
 
 	async batchPut({ tableName, items }: { tableName: string; items: any[] }) {

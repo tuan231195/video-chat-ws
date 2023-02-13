@@ -26,9 +26,7 @@ export const sendMessage = createAppAsyncThunk(
 		socketService.sendMessageAwaitResponse<any>({
 			action: CREATE_MESSAGE,
 			groupId,
-			message: {
-				body: message,
-			},
+			message,
 		})
 );
 

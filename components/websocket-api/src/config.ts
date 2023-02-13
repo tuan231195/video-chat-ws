@@ -47,6 +47,16 @@ export const config = async () => {
 				nullable: false,
 				default: null,
 			},
+			VIDEO_CALL_TABLE: {
+				format: String,
+				nullable: false,
+				default: null,
+			},
+			VIDEO_CALL_USERS_TABLE: {
+				format: String,
+				nullable: false,
+				default: null,
+			},
 			MESSAGES_TABLE: {
 				format: String,
 				nullable: false,

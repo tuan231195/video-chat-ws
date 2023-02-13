@@ -1,8 +1,8 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { RequestLogger } from '@vdtn359/nestjs-bootstrap';
-import { GroupRepository } from 'src/modules/groups/services/group.repository';
 import { BaseCommand, Command } from 'src/modules/command/domains';
 import { IsNotEmpty, IsString } from 'class-validator';
+import { GroupUserRepository } from 'src/modules/groups/repositories/group-user.repository';
 
 @Command('group-users:list')
 export class ListGroupUsersCommand extends BaseCommand {
@@ -13,9 +13,9 @@ export class ListGroupUsersCommand extends BaseCommand {
 
 @CommandHandler(ListGroupUsersCommand)
 export class ListGroupUsersHandler implements ICommandHandler<ListGroupUsersCommand> {
-	constructor(private readonly logger: RequestLogger, private readonly groupRepository: GroupRepository) {}
+	constructor(private readonly logger: RequestLogger, private readonly groupUserRepository: GroupUserRepository) {}
 
 	async execute(command: ListGroupUsersCommand) {
-		return this.groupRepository.getGroupUsers(command.groupId);
+		return this.groupUserRepository.getGroupUsers(command.groupId);
 	}
 }

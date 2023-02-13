@@ -146,6 +146,7 @@ importers:
             classnames: ^2.3.2
             javascript-time-ago: ^2.5.9
             jwt-decode: ^3.1.2
+            peerjs: ^1.4.7
             react: ^18.2.0
             react-dom: ^18.2.0
             react-infinite-scroll-component: ^6.1.0
@@ -169,6 +170,7 @@ importers:
             classnames: 2.3.2
             javascript-time-ago: 2.5.9
             jwt-decode: 3.1.2
+            peerjs: 1.4.7
             react: 18.2.0
             react-dom: 18.2.0_react@18.2.0
             react-infinite-scroll-component: 6.1.0_react@18.2.0
@@ -189,13 +191,15 @@ importers:
             '@types/convict': ^6.1.1
             '@types/lodash': ^4.14.191
             '@vdtn359/nestjs-bootstrap': ^1.0.22
+            class-transformer: ^0.5.1
             dataloader: ^2.1.0
             lodash: ^4.17.21
         dependencies:
             '@aws-sdk/client-dynamodb': 3.254.0
             '@aws-sdk/lib-dynamodb': 3.254.0_3mhwqyitfuvmr3q3s4ijtjo76m
-            '@nestjs/common': 9.2.1_mnr6j2del53muneqly5h4y27ai
+            '@nestjs/common': 9.2.1_ew7gazwbjf4vlpfvmmn4v2vvei
             '@vdtn359/nestjs-bootstrap': 1.0.22_dntc3uqqknzoduyjojusds5kla
+            class-transformer: 0.5.1
             dataloader: 2.1.0
             lodash: 4.17.21
         devDependencies:
@@ -5643,7 +5647,7 @@ packages:
             uuid: 9.0.0
         dev: false
 
-    /@nestjs/common/9.2.1_mnr6j2del53muneqly5h4y27ai:
+    /@nestjs/common/9.2.1_ew7gazwbjf4vlpfvmmn4v2vvei:
         resolution:
             {
                 integrity: sha512-nZuo3oDsSSlC5mti/M2aCWTEIfHPGDXmBwWgPeCpRbrNz3IWd109rkajll+yxgidVjznAdBS9y00JkAVJblNYw==,
@@ -5662,6 +5666,7 @@ packages:
             class-validator:
                 optional: true
         dependencies:
+            class-transformer: 0.5.1
             iterare: 1.2.1
             reflect-metadata: 0.1.13
             rxjs: 7.8.0
@@ -7201,6 +7206,15 @@ packages:
             '@swc/core-win32-ia32-msvc': 1.2.224
             '@swc/core-win32-x64-msvc': 1.2.224
         dev: true
+
+    /@swc/helpers/0.3.17:
+        resolution:
+            {
+                integrity: sha512-tb7Iu+oZ+zWJZ3HJqwx8oNwSDIU440hmVMDPhpACWQWnrZHK99Bxs70gT1L2dnr5Hg50ZRWEFkQCAnOVVV0z1Q==,
+            }
+        dependencies:
+            tslib: 2.4.1
+        dev: false
 
     /@swc/jest/0.2.22_@swc+core@1.2.224:
         resolution:
@@ -10288,6 +10302,13 @@ packages:
         resolution:
             {
                 integrity: sha512-ETWD/H2TbWbKEi7m9N4Km5+cw1hNcqJSxlSYhsLsNjQzWWiZIYA1zafxpK9PwVfaZ6AqR5rrjPVUBGESm5tQUA==,
+            }
+        dev: false
+
+    /class-transformer/0.5.1:
+        resolution:
+            {
+                integrity: sha512-SQa1Ws6hUbfC98vKGxZH3KFY0Y1lm5Zm0SY8XX9zbK7FJCyVEac3ATW0RIpwzW+oOfmHE5PMPufDG9hCfoEOMw==,
             }
         dev: false
 
@@ -19604,6 +19625,26 @@ packages:
             }
         engines: { node: '>=8' }
 
+    /peerjs-js-binarypack/1.0.1:
+        resolution:
+            {
+                integrity: sha512-N6aeia3NhdpV7kiGxJV5xQiZZCVEEVjRz2T2C6UZQiBkHWHzUv/oWA4myQLcwBwO8LUoR1KWW5oStvwVesmfCg==,
+            }
+        dev: false
+
+    /peerjs/1.4.7:
+        resolution:
+            {
+                integrity: sha512-dWE2HIGvJO0Hm8lYHJiO/5OWl8xYtGcAuU08To1HMIfhh76ULzkCS3NIQO/PZm4noO1RhaGTkQaQ6sbAss6/Tg==,
+            }
+        engines: { node: '>= 10' }
+        dependencies:
+            '@swc/helpers': 0.3.17
+            eventemitter3: 4.0.7
+            peerjs-js-binarypack: 1.0.1
+            webrtc-adapter: 7.7.1
+        dev: false
+
     /performance-now/2.1.0:
         resolution:
             {
@@ -22727,6 +22768,16 @@ packages:
             fsevents: 2.3.2
         dev: false
 
+    /rtcpeerconnection-shim/1.2.15:
+        resolution:
+            {
+                integrity: sha512-C6DxhXt7bssQ1nHb154lqeL0SXz5Dx4RczXZu2Aa/L1NJFnEVDxFwCBo3fqtuljhHIGceg5JKBV4XJ0gW5JKyw==,
+            }
+        engines: { node: '>=6.0.0', npm: '>=3.10.0' }
+        dependencies:
+            sdp: 2.12.0
+        dev: false
+
     /run-async/2.4.1:
         resolution:
             {
@@ -22929,6 +22980,13 @@ packages:
             }
         dependencies:
             compute-scroll-into-view: 2.0.4
+        dev: false
+
+    /sdp/2.12.0:
+        resolution:
+            {
+                integrity: sha512-jhXqQAQVM+8Xj5EjJGVweuEzgtGWb3tmEEpl3CLP3cStInSbVHSg0QWOGQzNq8pSID4JkpeV2mPqlMDLrm0/Vw==,
+            }
         dev: false
 
     /secure-json-parse/2.6.0:
@@ -25360,6 +25418,17 @@ packages:
             - '@swc/core'
             - esbuild
             - uglify-js
+        dev: false
+
+    /webrtc-adapter/7.7.1:
+        resolution:
+            {
+                integrity: sha512-TbrbBmiQBL9n0/5bvDdORc6ZfRY/Z7JnEj+EYOD1ghseZdpJ+nF2yx14k3LgQKc7JZnG7HAcL+zHnY25So9d7A==,
+            }
+        engines: { node: '>=6.0.0', npm: '>=3.10.0' }
+        dependencies:
+            rtcpeerconnection-shim: 1.2.15
+            sdp: 2.12.0
         dev: false
 
     /websocket-driver/0.7.4:

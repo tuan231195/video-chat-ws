@@ -3,5 +3,7 @@ export class GroupEntity {
 
 	name!: string;
 
+	lastMessageId?: string;
+
 	createdAt!: Date;
 }

@@ -45,6 +45,30 @@ export function IndexStack({ stack }: StackContext) {
 		primaryIndex: { partitionKey: 'groupId', sortKey: 'userId' },
 	});
 
+	const videoCallTable = new Table(stack, 'video-call-table', {
+		fields: {
+			id: 'string',
+			groupId: 'string',
+			status: 'string',
+		},
+		globalIndexes: {
+			group_id_index: {
+				partitionKey: 'groupId',
+				sortKey: 'status',
+				projection: 'all',
+			},
+		},
+		primaryIndex: { partitionKey: 'id' },
+	});
+
+	const videoCallUserTable = new Table(stack, 'video-call-users-table', {
+		fields: {
+			videoCallId: 'string',
+			userId: 'string',
+		},
+		primaryIndex: { partitionKey: 'videoCallId', sortKey: 'userId' },
+	});
+
 	const messageTable = new Table(stack, 'messages-table', {
 		fields: {
 			groupId: 'string',
@@ -85,6 +109,10 @@ export function IndexStack({ stack }: StackContext) {
 		MessagesTableName: messageTable.tableName,
 		UsersTableArn: userTable.tableArn,
 		UsersTableName: userTable.tableName,
+		videoCallTableArn: videoCallTable.tableArn,
+		videoCallTableName: videoCallTable.tableName,
+		videoCallUserTableArn: videoCallUserTable.tableArn,
+		videoCallUserTableName: videoCallUserTable.tableName,
 	});
 
 	return {
@@ -93,6 +121,8 @@ export function IndexStack({ stack }: StackContext) {
 		messageTable,
 		userTable,
 		groupTable,
+		videoCallTable,
+		videoCallUserTable,
 		cfnAccount,
 		cwRole,
 	};
