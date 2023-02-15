@@ -5,13 +5,22 @@ import { errorMiddleware } from 'src/store/middlewares/error';
 import { messagesReducer } from 'src/store/reducers/messages.reducer';
 import { SocketService } from 'src/services/socket.service';
 import { UserService } from 'src/services/user.service';
+import { videoCallsReducer } from 'src/store/reducers/video-calls.reducer';
+import { PeerService } from 'src/services/peer.service';
+import { MediaStreamService } from 'src/services/media-stream.service';
 
 const reducers = combineReducers({
 	groups: groupsReducer.reducer,
 	messages: messagesReducer.reducer,
+	videoCalls: videoCallsReducer.reducer,
 });
 
-export function createStore(socketService: SocketService, userService: UserService) {
+export function createStore(
+	socketService: SocketService,
+	userService: UserService,
+	peerService: PeerService,
+	mediaStreamService: MediaStreamService
+) {
 	return configureStore({
 		devTools: true,
 		reducer: reducers,
@@ -21,6 +30,8 @@ export function createStore(socketService: SocketService, userService: UserServi
 					extraArgument: {
 						socketService,
 						userService,
+						peerService,
+						mediaStreamService,
 					},
 				},
 			}).concat(errorMiddleware.middleware),

@@ -3,7 +3,6 @@ import { GroupRepository } from 'src/modules/groups/repositories/group.repositor
 import { ConnectionService } from 'src/modules/connections/repositories/connection.service';
 import { UserRepository } from 'src/modules/users/repositories';
 import { MessageRepository } from 'src/modules/messages/repositories/message.repository';
-import { chunk, uniq } from 'lodash';
 import { MessageDto } from 'src/modules/messages/domains/value-objects';
 import { GroupUserRepository } from 'src/modules/groups/repositories';
 import { newId } from 'src/utils/id';
@@ -26,34 +25,16 @@ export class MessageService {
 				groupId: message.groupId,
 			},
 		});
-		const userConnections = uniq(
-			(
-				await Promise.all(
-					groupUsers.map(async (groupUser) => {
-						const user = await this.userRepository.load({ id: groupUser.userId });
-						return (user.connections ?? []).map((connectionId: string) => ({
-							connectionId,
-							userId: groupUser.userId,
-						}));
-					})
-				)
-			).flat()
-		);
 
-		const batches = chunk(userConnections, 10);
-		for (const batch of batches) {
-			// eslint-disable-next-line no-await-in-loop
-			await Promise.all(
-				batch.map(async ({ connectionId, userId }) =>
-					this.connectionService.postToConnection(connectionId, userId, {
-						action: 'message:created',
-						result: {
-							message,
-						},
-					})
-				)
-			);
-		}
+		await this.connectionService.postToUsers(
+			groupUsers.map((groupUser) => groupUser.userId),
+			{
+				action: 'message:created',
+				result: {
+					message,
+				},
+			}
+		);
 	}
 
 	async createMessage(messageDto: MessageDto) {
@@ -67,14 +48,14 @@ export class MessageService {
 			createdAt: new Date().toISOString(),
 		});
 
-		await this.groupUserRepository.update(
+		await this.groupUserRepository.upsert(
 			{ groupId: messageDto.groupId, userId: messageDto.userId },
 			{
 				lastAccess: new Date().toISOString(),
 			}
 		);
 
-		await this.groupRepository.update(
+		await this.groupRepository.upsert(
 			{ id: messageDto.groupId },
 			{
 				lastMessageId: messageEntity.id,

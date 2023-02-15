@@ -1,10 +1,11 @@
 import React from 'react';
 import 'antd/dist/reset.css';
-import { store, userService } from 'src/services';
+import { mediaStreamService, store, userService } from 'src/services';
 import { SessionContext } from 'src/context/session';
 import { ConfigProvider } from 'antd';
 import { Main } from 'src/Main';
 import { Provider } from 'react-redux';
+import { MediaContext } from 'src/context/media-context';
 
 function App() {
 	const session = userService.getSession();
@@ -21,7 +22,9 @@ function App() {
 					},
 				}}>
 				<SessionContext.Provider value={session}>
-					<Main />
+					<MediaContext.Provider value={mediaStreamService}>
+						<Main />
+					</MediaContext.Provider>
 				</SessionContext.Provider>
 			</ConfigProvider>
 		</Provider>

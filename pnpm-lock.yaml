@@ -6498,7 +6498,7 @@ packages:
             react-redux:
                 optional: true
         dependencies:
-            immer: 9.0.16
+            immer: 9.0.19
             react: 18.2.0
             react-redux: 8.0.5_r7hvvldj6g2s5chfsdsflfq664
             redux: 4.2.1
@@ -6665,14 +6665,14 @@ packages:
             conf: 10.2.0
             constructs: 10.1.201
             cross-spawn: 7.0.3
-            dendriform-immer-patch-optimiser: 2.1.3_immer@9.0.16
+            dendriform-immer-patch-optimiser: 2.1.3_immer@9.0.19
             dotenv: 10.0.0
             dotenv-expand: 5.1.0
             esbuild: 0.14.54
             escodegen: 2.0.0
             express: 4.18.2
             fs-extra: 9.1.0
-            immer: 9.0.16
+            immer: 9.0.19
             js-yaml: 4.1.0
             kysely: 0.21.6
             kysely-codegen: 0.6.2_kysely@0.21.6
@@ -11884,7 +11884,7 @@ packages:
             }
         dev: true
 
-    /dendriform-immer-patch-optimiser/2.1.3_immer@9.0.16:
+    /dendriform-immer-patch-optimiser/2.1.3_immer@9.0.19:
         resolution:
             {
                 integrity: sha512-QG2IegUCdlhycVwsBOJ7SNd18PgzyWPxBivTzuF0E1KFxaU47fHy/frud74A9E66a4WXyFFp9FLLC2XQDkVj7g==,
@@ -11893,7 +11893,7 @@ packages:
         peerDependencies:
             immer: '9'
         dependencies:
-            immer: 9.0.16
+            immer: 9.0.19
         dev: true
 
     /depd/1.1.2:
@@ -15348,10 +15348,10 @@ packages:
             }
         engines: { node: '>= 4' }
 
-    /immer/9.0.16:
+    /immer/9.0.19:
         resolution:
             {
-                integrity: sha512-qenGE7CstVm1NrHQbMh8YaSzTZTFNP3zPqr3YU0S0UY441j4bJTg4A2Hh5KAhwgaiU6ZZ1Ar6y/2f4TblnMReQ==,
+                integrity: sha512-eY+Y0qcsB4TZKwgQzLaE/lqYMlKhv5J9dyd2RhhtGhNo2njPXDqU9XPfcNfa3MIDsdtZt5KlkIsirlo4dHsWdQ==,
             }
 
     /import-fresh/3.3.0:
@@ -21880,7 +21880,7 @@ packages:
             global-modules: 2.0.0
             globby: 11.1.0
             gzip-size: 6.0.0
-            immer: 9.0.16
+            immer: 9.0.19
             is-root: 2.1.0
             loader-utils: 3.2.1
             open: 8.4.0

@@ -55,7 +55,7 @@ export const Messages = () => {
 		scrollToBottom();
 	};
 
-	const onVideoCall = () => {
+	const onVideoCall = async () => {
 		setShowVideoModal(true);
 	};
 

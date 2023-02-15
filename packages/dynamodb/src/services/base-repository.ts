@@ -45,7 +45,7 @@ export abstract class BaseRepository<T = any> {
 		return this.dynamodbService.destroyItem(this.tableName, record);
 	}
 
-	update(key: Record<string, any>, record: Record<string, any>) {
+	upsert(key: Record<string, any>, record: Record<string, any>) {
 		return this.dynamodbService
 			.upsert(this.tableName, key, record)
 			.then((item) => plainToInstance(this.clazz, item));

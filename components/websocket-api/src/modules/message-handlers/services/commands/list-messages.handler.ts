@@ -29,7 +29,7 @@ export class ListMessagesHandler implements ICommandHandler<ListMessagesCommand>
 
 		await this.groupUserRepository.checkGroupUser(command.groupId, command.context.userId);
 
-		await this.groupUserRepository.update(
+		await this.groupUserRepository.upsert(
 			{ groupId: command.groupId, userId: command.context.userId },
 			{
 				lastAccess: new Date().toISOString(),

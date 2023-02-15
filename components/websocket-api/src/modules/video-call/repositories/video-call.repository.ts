@@ -3,15 +3,13 @@ import { BaseRepository, DynamoDbService } from '@vdtn359/dynamodb-nestjs-module
 import { CONFIG_TOKEN, RequestLogger } from '@vdtn359/nestjs-bootstrap';
 import type { Config } from 'src/config';
 import { newId } from 'src/utils/id';
-import { VideoCallEntity, VideoCallUserEntity } from 'src/modules/video-call/domains';
+import { VideoCallEntity } from 'src/modules/video-call/domains';
 
 const ATTRIBUTE_EXISTS = 'attribute_exists(id)';
 
 @Injectable()
 export class VideoCallRepository extends BaseRepository {
 	private readonly videoCallTable: string;
-
-	private readonly videoCallUsersTable: string;
 
 	constructor(
 		readonly dynamodbService: DynamoDbService,
@@ -21,73 +19,24 @@ export class VideoCallRepository extends BaseRepository {
 		const table = config.get('VIDEO_CALL_TABLE')!;
 		super(dynamodbService, VideoCallEntity, table, [['id']]);
 		this.videoCallTable = table!;
-		this.videoCallUsersTable = config.get('VIDEO_CALL_USERS_TABLE')!;
-	}
-
-	async listVideoCallUsers(videoCallId: string) {
-		return this.dynamodbService.queryAll({
-			tableName: this.videoCallUsersTable,
-			key: {
-				videoCallId,
-			},
-		}) as Promise<VideoCallUserEntity[]>;
-	}
-
-	async joinVideoCall(videoCallId: string, userId: string) {
-		await this.dynamodbService.documentClient.update({
-			Key: {
-				id: videoCallId,
-			},
-			TableName: this.videoCallTable,
-			UpdateExpression: 'ADD participantCount 1',
-			ConditionExpression: ATTRIBUTE_EXISTS,
-		});
-		await this.dynamodbService.putItem(this.videoCallUsersTable, {
-			videoCallId,
-			userId,
-			joinedAt: new Date().toISOString(),
-			leftDate: null,
-		});
-	}
-
-	async leftVideoCall(videoCallId: string, userId: string) {
-		const { Attributes: { ParticipantCount = 0 } = {} } = await this.dynamodbService.documentClient.update({
-			Key: {
-				id: videoCallId,
-			},
-			TableName: this.videoCallTable,
-			UpdateExpression: 'ADD participantCount -1',
-			ReturnValues: 'UPDATED_NEW',
-			ConditionExpression: ATTRIBUTE_EXISTS,
-		});
-		await this.dynamodbService.upsert(
-			this.videoCallUsersTable,
-			{
-				videoCallId,
-				userId,
-			},
-			{
-				videoCallId,
-				userId,
-				leftAt: new Date().toISOString(),
-			}
-		);
-		if (!ParticipantCount) {
-			await this.deactivateVideoCall(videoCallId);
-		}
 	}
 
 	async findOrCreateNewVideoCall(groupId: string, userId: string): Promise<VideoCallEntity> {
-		const activeVideoCall = await this.get({
-			groupId,
-			status: 'active',
+		const {
+			items: [activeVideoCall],
+		} = await this.query({
+			key: { groupId, status: 'active' },
+			indexName: 'group_id_index',
 		});
 		if (activeVideoCall) {
+			this.logger.info(`Using existing video call ${activeVideoCall.id} for group ${groupId}`);
 			return activeVideoCall;
 		}
 
+		const id = newId();
+		this.logger.info(`Creating new video call ${id} by user ${userId} for group ${groupId}`);
 		return this.save({
-			id: newId(),
+			id,
 			creator: userId,
 			groupId,
 			status: 'active',
@@ -96,15 +45,20 @@ export class VideoCallRepository extends BaseRepository {
 	}
 
 	async deactivateVideoCall(videoCallId: string) {
+		this.logger.info('Deactivating video call');
 		await this.dynamodbService.documentClient.update({
 			Key: {
 				id: videoCallId,
 			},
 			TableName: this.videoCallTable,
-			UpdateExpression: 'SET status = :status AND endAt = :endAt',
+			UpdateExpression: 'SET #status = :status, #endAt = :endAt',
+			ExpressionAttributeNames: {
+				'#status': 'status',
+				'#endAt': 'endAt',
+			},
 			ExpressionAttributeValues: {
-				status: 'inactive',
-				endAt: new Date().toISOString(),
+				':status': 'inactive',
+				':endAt': new Date().toISOString(),
 			},
 			ReturnValues: 'UPDATED_NEW',
 			ConditionExpression: ATTRIBUTE_EXISTS,

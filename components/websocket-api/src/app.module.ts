@@ -7,6 +7,8 @@ import { MessageModule } from 'src/modules/messages/message.module';
 import { UserModule } from 'src/modules/users/user.module';
 import { GroupHandlersModule } from 'src/modules/group-handlers/group-handlers.module';
 import { MessageHandlersModule } from 'src/modules/message-handlers/message-handlers.module';
+import { VideoCallHandlersModule } from 'src/modules/video-call-handlers/video-call-handlers.module';
+import { VideoCallModule } from 'src/modules/video-call/video-call.module';
 import { ConnectionModule } from './modules/connections/connection.module';
 import { config } from './config';
 
@@ -27,6 +29,8 @@ const { version } = require('../package.json');
 		MessageModule,
 		MessageHandlersModule,
 		UserModule,
+		VideoCallHandlersModule,
+		VideoCallModule,
 	],
 })
 export class AppModule {}

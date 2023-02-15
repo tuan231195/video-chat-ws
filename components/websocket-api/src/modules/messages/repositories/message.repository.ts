@@ -6,7 +6,7 @@ import { MessageEntity } from 'src/modules/messages/domains/entities';
 import { UserRepository } from 'src/modules/users/repositories';
 
 @Injectable()
-export class MessageRepository extends BaseRepository {
+export class MessageRepository extends BaseRepository<MessageEntity> {
 	private readonly messagesTable: string;
 
 	constructor(
@@ -23,11 +23,14 @@ export class MessageRepository extends BaseRepository {
 		if (!idOrMessage) {
 			return null;
 		}
-		let loadedMessage: MessageEntity;
+		let loadedMessage: MessageEntity | null;
 		if (typeof idOrMessage === 'string') {
 			loadedMessage = await this.load({ id: idOrMessage });
 		} else {
 			loadedMessage = idOrMessage;
+		}
+		if (!loadedMessage) {
+			return null;
 		}
 		const user = await this.userRepository.load({ id: loadedMessage.userId });
 		delete user.connections;

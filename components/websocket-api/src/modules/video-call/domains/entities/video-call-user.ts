@@ -1,9 +1,19 @@
+import { UserEntity } from 'src/modules/users/domains';
+
 export class VideoCallUserEntity {
 	id!: string;
 
-	videoCallId!: number;
+	videoCallId!: string;
 
-	userId!: number;
+	userId!: string;
 
-	joinedDate!: string;
+	peerId!: string;
+
+	connectionId!: string;
+
+	user?: UserEntity;
+
+	joinedAt!: string;
+
+	leftAt!: string;
 }
