@@ -1,23 +1,21 @@
 import React, { useState } from 'react';
 import { Form, Input, Modal } from 'antd';
-import styles from 'src/components/groups/GroupAddModal.module.css';
+import styles from 'src/components/groups/GroupJoinModal.module.css';
 import { useAppDispatch } from 'src/store/store';
-import { createGroup } from 'src/store/actions/group';
-import { GroupCreatedModal } from 'src/components/groups/GroupCreatedModal';
+import { joinGroup } from 'src/store/actions/group';
 
-export const GroupAddModal = ({ onClose }: { onClose: () => void }) => {
+export const GroupJoinModal = ({ onClose }: { onClose: () => void }) => {
 	const [form] = Form.useForm();
 	const dispatch = useAppDispatch();
 	const [buttonDisabled, setButtonDisabled] = useState(true);
 	const [submitting, setSubmitting] = useState(false);
-	const [createdGroup, setCreatedGroup] = useState(null);
 
 	const onSave = async () => {
 		const payload = form.getFieldsValue();
 		try {
 			setSubmitting(true);
-			const userGroup = await dispatch(createGroup(payload));
-			setCreatedGroup(userGroup.payload.groupId);
+			await dispatch(joinGroup(payload));
+			onClose();
 		} finally {
 			setSubmitting(false);
 		}
@@ -27,21 +25,17 @@ export const GroupAddModal = ({ onClose }: { onClose: () => void }) => {
 		<Modal
 			className={styles.modal}
 			open
-			title="Create group"
+			title="Join group"
 			onCancel={onClose}
 			onOk={onSave}
 			okButtonProps={{ disabled: buttonDisabled || submitting }}>
 			<div className={styles.modal}>
-				{!!createdGroup && <GroupCreatedModal id={createdGroup} onClose={onClose} />}
 				<Form
 					form={form}
 					onFieldsChange={() =>
 						setButtonDisabled(form.getFieldsError().some((field) => field.errors.length > 0))
 					}>
-					<Form.Item
-						name="name"
-						label="Title"
-						rules={[{ required: true, message: 'Group title is required' }]}>
+					<Form.Item name="groupId" label="ID" rules={[{ required: true, message: 'Group id is required' }]}>
 						<Input />
 					</Form.Item>
 				</Form>

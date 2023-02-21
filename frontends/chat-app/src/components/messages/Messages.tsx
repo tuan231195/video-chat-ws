@@ -1,15 +1,16 @@
-import { Avatar, Empty, Input, Layout, Space, Spin, theme, Typography } from 'antd';
+import { Avatar, Empty, Input, Layout, Modal, Space, Spin, theme, Typography } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/store/store';
 import { CenterSpin } from 'src/components/common/CenterSpin';
 import { useSession } from 'src/context/session';
 import { generateAvatar } from 'src/lib/common/avatar';
 import { timeAgo } from 'src/lib/common/date';
-import { SendOutlined, VideoCameraTwoTone } from '@ant-design/icons';
+import { LogoutOutlined, SendOutlined, VideoCameraTwoTone } from '@ant-design/icons';
 import { loadMoreMessages, sendMessage } from 'src/store/actions/message';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useSelectedGroup } from 'src/store/selectors/group';
 import { VideoCallModal } from 'src/components/messages/VideoCallModal';
+import { leaveGroup } from 'src/store/actions/group';
 import styles from './Messages.module.css';
 
 const { Title, Text } = Typography;
@@ -57,6 +58,17 @@ export const Messages = () => {
 
 	const onVideoCall = async () => {
 		setShowVideoModal(true);
+	};
+
+	const onLeave = async () => {
+		if (selectedGroupId) {
+			Modal.confirm({
+				title: 'Do you want to leave this group?',
+				onOk: () => {
+					dispatch(leaveGroup(selectedGroupId));
+				},
+			});
+		}
 	};
 
 	const onCloseVideoCall = () => {
@@ -140,11 +152,17 @@ export const Messages = () => {
 						{selectedGroup.group.name}
 					</Title>
 				</Space>
-				<VideoCameraTwoTone
-					twoToneColor={colorPrimary}
-					style={{ fontSize: 24, cursor: 'pointer' }}
-					onClick={onVideoCall}
-				/>
+				<Space direction={'horizontal'} size={20} align={'center'}>
+					<VideoCameraTwoTone
+						twoToneColor={colorPrimary}
+						style={{ fontSize: 24, cursor: 'pointer' }}
+						onClick={onVideoCall}
+					/>
+					<LogoutOutlined
+						style={{ fontSize: 24, cursor: 'pointer', color: colorPrimary }}
+						onClick={onLeave}
+					/>
+				</Space>
 			</AppHeader>
 		);
 

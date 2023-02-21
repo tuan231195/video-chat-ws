@@ -7,8 +7,9 @@ import { CenterSpin } from 'src/components/common/CenterSpin';
 import { generateAvatar } from 'src/lib/common/avatar';
 import classnames from 'classnames';
 import { timeAgo } from 'src/lib/common/date';
-import { UsergroupAddOutlined } from '@ant-design/icons';
+import { LoginOutlined, UsergroupAddOutlined } from '@ant-design/icons';
 import { GroupAddModal } from 'src/components/groups/GroupAddModal';
+import { GroupJoinModal } from 'src/components/groups/GroupJoinModal';
 import styles from './GroupList.module.css';
 
 const { Text, Title } = Typography;
@@ -17,7 +18,8 @@ const { Header: AppHeader } = Layout;
 
 export const GroupList = () => {
 	const { loading, items, selectedGroupId } = useAppSelector((store) => store.groups);
-	const [isShowingGroupModal, setShowingGroupModal] = useState(false);
+	const [isShowingCreateGroupModal, setShowingCreateGroupModal] = useState(false);
+	const [isShowingJoinGroupModal, setShowingJoinGroupModal] = useState(false);
 	const dispatch = useAppDispatch();
 	if (loading) {
 		return <CenterSpin size="large" />;
@@ -26,8 +28,13 @@ export const GroupList = () => {
 		dispatch(selectGroup(group));
 	};
 	const onShowGroupModal = () => {
-		setShowingGroupModal(true);
+		setShowingCreateGroupModal(true);
 	};
+
+	const onJoinGroup = () => {
+		setShowingJoinGroupModal(true);
+	};
+
 	return (
 		<>
 			<AppHeader className={styles['group-controls-header']}>
@@ -36,9 +43,11 @@ export const GroupList = () => {
 				</Title>
 				<Space direction={'horizontal'} size={10} align={'end'}>
 					<UsergroupAddOutlined style={{ fontSize: 24 }} onClick={onShowGroupModal} />
+					<LoginOutlined style={{ fontSize: 24 }} onClick={onJoinGroup} />
 				</Space>
 			</AppHeader>
-			{isShowingGroupModal && <GroupAddModal onClose={() => setShowingGroupModal(false)} />}
+			{isShowingCreateGroupModal && <GroupAddModal onClose={() => setShowingCreateGroupModal(false)} />}
+			{isShowingJoinGroupModal && <GroupJoinModal onClose={() => setShowingJoinGroupModal(false)} />}
 			<List
 				size="large"
 				itemLayout="horizontal"

@@ -4,6 +4,8 @@ import { createAppAsyncThunk } from 'src/store/thunk';
 
 const LIST_USER_GROUPS = 'user-groups:list';
 const CREATE_GROUP = 'group:create';
+const JOIN_GROUP = 'group:join';
+const LEAVE_GROUP = 'group:leave';
 
 export const selectGroup = createAppAsyncThunk('groups/select', async (userGroup: UserGroup, { dispatch }) => {
 	dispatch(loadGroupChat(userGroup.groupId));
@@ -31,5 +33,34 @@ export const createGroup = createAppAsyncThunk(
 		});
 		dispatch(selectGroup(result));
 		return result;
+	}
+);
+
+export const joinGroup = createAppAsyncThunk(
+	'groups/join',
+	async ({ groupId }: { groupId: string }, { extra: { socketService }, dispatch }) => {
+		const result = await socketService.sendMessageAwaitResponse<UserGroup>({
+			action: JOIN_GROUP,
+			groupId,
+		});
+		dispatch(selectGroup(result));
+		return result;
+	}
+);
+
+export const leaveGroup = createAppAsyncThunk(
+	'groups/leave',
+	async (groupId: string, { extra: { socketService }, dispatch, getState }) => {
+		await socketService.sendMessageAwaitResponse<UserGroup>({
+			action: LEAVE_GROUP,
+			groupId,
+		});
+		const {
+			groups: { items },
+		} = getState();
+		if (items.length) {
+			dispatch(selectGroup(items[0]));
+		}
+		return groupId;
 	}
 );

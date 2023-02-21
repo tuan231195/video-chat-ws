@@ -5,6 +5,7 @@ import { IsNotEmpty, IsString } from 'class-validator';
 import { GroupRepository, GroupUserRepository } from 'src/modules/groups/repositories';
 import { NotFoundException } from '@nestjs/common';
 import { ErrorCodes } from 'src/utils/error-codes';
+import { MessageRepository } from 'src/modules/messages/repositories';
 
 @Command('group:join')
 export class JoinGroupCommand extends BaseCommand {
@@ -18,12 +19,13 @@ export class JoinGroupHandler implements ICommandHandler<JoinGroupCommand> {
 	constructor(
 		private readonly logger: RequestLogger,
 		private readonly groupUserRepository: GroupUserRepository,
-		private readonly groupRepository: GroupRepository
+		private readonly groupRepository: GroupRepository,
+		private readonly messageRepository: MessageRepository
 	) {}
 
 	async execute(command: JoinGroupCommand) {
 		this.logger.info('Join group', { command });
-		const group = await this.groupUserRepository.get({
+		const group = await this.groupRepository.get({
 			id: command.groupId,
 		});
 		if (!group) {
@@ -32,6 +34,12 @@ export class JoinGroupHandler implements ICommandHandler<JoinGroupCommand> {
 				message: 'Group not found',
 			});
 		}
-		return this.groupUserRepository.joinGroup(command.groupId, command.context.userId);
+		const userGroup = await this.groupUserRepository.joinGroup(command.groupId, command.context.userId);
+		return {
+			...userGroup,
+			group: await this.groupRepository.loadDetails(userGroup.groupId, {
+				messageRepository: this.messageRepository,
+			}),
+		};
 	}
 }

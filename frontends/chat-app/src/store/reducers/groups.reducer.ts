@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { UserGroup } from 'src/types/group';
 import { loadGroupChat } from 'src/store/actions/message';
 import { messagesReducer } from 'src/store/reducers/messages.reducer';
-import { createGroup, loadGroups, selectGroup } from '../actions/group';
+import { createGroup, joinGroup, leaveGroup, loadGroups, selectGroup } from '../actions/group';
 
 export interface State {
 	selectedGroupId: string | null;
@@ -36,6 +36,14 @@ export const groupsReducer = createSlice({
 			})
 			.addCase(createGroup.fulfilled, (state, action) => {
 				state.items.push(action.payload);
+			})
+			.addCase(joinGroup.fulfilled, (state, action) => {
+				if (!state.items.some((item) => item.groupId === action.payload.groupId)) {
+					state.items.push(action.payload);
+				}
+			})
+			.addCase(leaveGroup.fulfilled, (state, action) => {
+				state.items = state.items.filter((item) => item.groupId !== action.payload);
 			})
 			.addCase(messagesReducer.actions.messageCreated, (state, action) => {
 				const messageGroupUser = state.items.find((groupUser) => groupUser.groupId === action.payload.groupId);

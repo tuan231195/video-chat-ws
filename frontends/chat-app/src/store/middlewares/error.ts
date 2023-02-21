@@ -12,10 +12,10 @@ errorMiddleware.startListening({
 		Logger.error(error);
 
 		const message = status >= 500 || !errors[0]?.message ? 'Something went wrong' : errors[0].message;
-		notification.error({
+		notification.open({
 			message,
-			type: status === 500 ? 'error' : 'warning',
-			duration: 2000,
+			type: status >= 500 ? 'error' : 'warning',
+			duration: 2,
 		});
 	},
 });
