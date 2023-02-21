@@ -5,6 +5,7 @@ import { BaseCommand, Command } from 'src/modules/command/domains';
 import { IsNotEmpty, IsString } from 'class-validator';
 import { newId } from 'src/utils/id';
 import { GroupUserRepository } from 'src/modules/groups/repositories';
+import { MessageRepository } from 'src/modules/messages/repositories';
 
 @Command('group:create')
 export class CreateGroupCommand extends BaseCommand {
@@ -18,7 +19,8 @@ export class CreateGroupHandler implements ICommandHandler<CreateGroupCommand> {
 	constructor(
 		private readonly logger: RequestLogger,
 		private readonly groupRepository: GroupRepository,
-		private readonly groupUserRepository: GroupUserRepository
+		private readonly groupUserRepository: GroupUserRepository,
+		private readonly messageRepository: MessageRepository
 	) {}
 
 	async execute(command: CreateGroupCommand) {
@@ -31,8 +33,13 @@ export class CreateGroupHandler implements ICommandHandler<CreateGroupCommand> {
 		});
 
 		const { id: groupId } = group;
-		await this.groupUserRepository.joinGroup(groupId, command.context.userId);
+		const userGroup = await this.groupUserRepository.joinGroup(groupId, command.context.userId);
 
-		return group;
+		return {
+			...userGroup,
+			group: await this.groupRepository.loadDetails(userGroup.groupId, {
+				messageRepository: this.messageRepository,
+			}),
+		};
 	}
 }

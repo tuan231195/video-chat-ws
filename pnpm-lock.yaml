@@ -144,6 +144,7 @@ importers:
             '@types/uuid': ^9.0.0
             antd: ^5.1.7
             classnames: ^2.3.2
+            copy-to-clipboard: ^3.3.3
             javascript-time-ago: ^2.5.9
             jwt-decode: ^3.1.2
             peerjs: ^1.4.7
@@ -168,6 +169,7 @@ importers:
             '@types/react-dom': 18.0.10
             antd: 5.1.7_biqbaboplfbrettd7655fr4n2y
             classnames: 2.3.2
+            copy-to-clipboard: 3.3.3
             javascript-time-ago: 2.5.9
             jwt-decode: 3.1.2
             peerjs: 1.4.7

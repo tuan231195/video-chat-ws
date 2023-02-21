@@ -10,6 +10,16 @@
 	color: #00b96b !important;
 }
 
+.group-controls-header {
+	padding-left: 20px !important;
+	padding-right: 20px !important;
+	background-color: white !important;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
 .group-item-time {
 	margin-left: 10px;
 }
