@@ -1,11 +1,15 @@
-import { createContext, useContext } from 'react';
 import { User } from 'src/types/user';
+import { useAuth0 } from '@auth0/auth0-react';
 
-export type Session = {
-	token: string;
-	user: User;
+export const useUser = (): User => {
+	const { user } = useAuth0();
+
+	if (!user) {
+		throw new Error('Unauthenticated');
+	}
+	return {
+		id: user.sub!,
+		name: user.name!,
+		email: user.email,
+	};
 };
-
-export const SessionContext = createContext<Session>(null as any);
-
-export const useSession = () => useContext(SessionContext);

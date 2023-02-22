@@ -1,33 +1,33 @@
 import React from 'react';
 import 'antd/dist/reset.css';
-import { mediaStreamService, store, userService } from 'src/services';
-import { SessionContext } from 'src/context/session';
+import { mediaStreamService, store } from 'src/services';
 import { ConfigProvider } from 'antd';
-import { Main } from 'src/Main';
 import { Provider } from 'react-redux';
 import { MediaContext } from 'src/context/media-context';
+import { Auth0Provider } from '@auth0/auth0-react';
+import Auth from 'src/Auth';
 
 function App() {
-	const session = userService.getSession();
-	if (!session) {
-		return <div>Unauthorized</div>;
-	}
-
 	return (
-		<Provider store={store}>
-			<ConfigProvider
-				theme={{
-					token: {
-						colorPrimary: '#00b96b',
-					},
-				}}>
-				<SessionContext.Provider value={session}>
+		<Auth0Provider
+			domain={process.env.REACT_APP_AUTH0_DOMAIN!}
+			clientId={process.env.REACT_APP_AUTH0_CLIENT_ID!}
+			authorizationParams={{
+				redirect_uri: window.location.origin,
+			}}>
+			<Provider store={store}>
+				<ConfigProvider
+					theme={{
+						token: {
+							colorPrimary: '#00b96b',
+						},
+					}}>
 					<MediaContext.Provider value={mediaStreamService}>
-						<Main />
+						<Auth />
 					</MediaContext.Provider>
-				</SessionContext.Provider>
-			</ConfigProvider>
-		</Provider>
+				</ConfigProvider>
+			</Provider>
+		</Auth0Provider>
 	);
 }
 

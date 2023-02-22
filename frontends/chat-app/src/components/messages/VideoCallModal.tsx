@@ -15,7 +15,7 @@ import { useAppDispatch, useAppSelector } from 'src/store/store';
 import { useMediaStream } from 'src/context/media-context';
 import { CenterSpin } from 'src/components/common/CenterSpin';
 import { UserVideo } from 'src/components/messages/UserVideo';
-import { useSession } from 'src/context/session';
+import { useUser } from 'src/context/session';
 import { useCurrent } from 'src/lib/common/hooks';
 import styles from './VideoCallModal.module.css';
 
@@ -24,7 +24,7 @@ const { Header: AppHeader } = Layout;
 export const VideoCallModal = ({ group, onClose }: { group: UserGroup; onClose: () => void }) => {
 	const [audio, setAudio] = useState(true);
 	const [video, setVideo] = useState(true);
-	const { user: currentUser } = useSession();
+	const currentUser = useUser();
 	const dispatch = useAppDispatch();
 	const { loading, otherUsers, videoCallId } = useAppSelector((state) => state.videoCalls);
 	const videoCallIdRef = useCurrent(videoCallId);

@@ -10,17 +10,15 @@ type Message = Record<string, any> & {
 };
 
 export class SocketService {
-	constructor(private readonly userService: UserService) {
-		this.connect();
-	}
+	constructor(private readonly userService: UserService) {}
 
 	private socket$!: WebSocketSubject<any>;
 
 	private messagesSubject$ = new Subject();
 
-	public connect(): void {
+	public connect(token: string) {
 		if (!this.socket$ || this.socket$.closed) {
-			this.socket$ = this.getNewWebSocket();
+			this.socket$ = this.getNewWebSocket(token);
 			this.socket$
 				.pipe(
 					tap({
@@ -35,12 +33,7 @@ export class SocketService {
 		}
 	}
 
-	private getNewWebSocket() {
-		const session = this.userService.getSession();
-		if (!session) {
-			throw new Error('Unauthorized');
-		}
-		const { token } = session;
+	private getNewWebSocket(token: string) {
 		return webSocket(`${process.env.REACT_APP_WEBSOCKET_API_URL}?authorization=${token}`);
 	}
 

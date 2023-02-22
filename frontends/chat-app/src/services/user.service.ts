@@ -1,30 +1,9 @@
-import jwtDecode from 'jwt-decode';
-import { Session } from 'src/context/session';
+import type { User } from 'src/types/user';
 
-const USER_KEY = 'USER';
 export class UserService {
-	session: Session | null = null;
+	user: User | null = null;
 
-	getSession(): Session | null {
-		if (this.session) {
-			return this.session;
-		}
-		const token = localStorage.getItem(USER_KEY);
-		if (!token) {
-			return null;
-		}
-		try {
-			const user: any = jwtDecode(token);
-			this.session = {
-				token,
-				user: {
-					...user,
-					id: user.sub,
-				},
-			};
-			return this.session;
-		} catch (err) {
-			return null;
-		}
+	getUser(): User | null {
+		return this.user;
 	}
 }

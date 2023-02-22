@@ -23,7 +23,7 @@ export class SocketListenerService {
 				dispatch(
 					messagesReducer.actions.messageCreated({
 						...response.result.message,
-						isCurrentUser: this.userService.getSession()?.user.id === response.result.message.userId,
+						isCurrentUser: this.userService.getUser()?.id === response.result.message.userId,
 					})
 				);
 			}

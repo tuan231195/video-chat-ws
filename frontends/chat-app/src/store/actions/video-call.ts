@@ -33,8 +33,8 @@ export const callUsers = createAppAsyncThunk(
 		{ users, userStream }: { userStream: MediaStream; users: VideoCallUser[] },
 		{ extra: { peerService, mediaStreamService, userService } }
 	) => {
-		const { user: currentUser } = userService.getSession()!;
-		const otherUsers = users.filter(({ userId }) => userId !== userService.getSession()?.user.id);
+		const currentUser = userService.getUser()!;
+		const otherUsers = users.filter(({ userId }) => userId !== currentUser.id);
 		return Promise.all(
 			otherUsers.map(async (user) => {
 				Logger.info('Calling user', user);

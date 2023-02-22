@@ -2,7 +2,6 @@ import { Avatar, Empty, Input, Layout, Modal, Space, Spin, theme, Typography } f
 import React, { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/store/store';
 import { CenterSpin } from 'src/components/common/CenterSpin';
-import { useSession } from 'src/context/session';
 import { generateAvatar } from 'src/lib/common/avatar';
 import { timeAgo } from 'src/lib/common/date';
 import { LogoutOutlined, SendOutlined, VideoCameraTwoTone } from '@ant-design/icons';
@@ -11,6 +10,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useSelectedGroup } from 'src/store/selectors/group';
 import { VideoCallModal } from 'src/components/messages/VideoCallModal';
 import { leaveGroup } from 'src/store/actions/group';
+import { useUser } from 'src/context/session';
 import styles from './Messages.module.css';
 
 const { Title, Text } = Typography;
@@ -21,7 +21,7 @@ export const Messages = () => {
 	const { loading, items, lastKey } = useAppSelector((store) => store.messages);
 	const { selectedGroupId } = useAppSelector((store) => store.groups);
 	const selectedGroup = useSelectedGroup();
-	const { user } = useSession();
+	const user = useUser();
 	const listRef = useRef<HTMLDivElement>(null as any);
 	const [message, setMessage] = useState('');
 	const [showVideoModal, setShowVideoModal] = useState(false);

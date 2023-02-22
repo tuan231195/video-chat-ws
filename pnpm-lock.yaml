@@ -133,6 +133,7 @@ importers:
     frontends/chat-app:
         specifiers:
             '@ant-design/icons': ^5.0.1
+            '@auth0/auth0-react': ^2.0.1
             '@reduxjs/toolkit': ^1.9.2
             '@testing-library/jest-dom': ^5.16.5
             '@testing-library/react': ^13.4.0
@@ -159,6 +160,7 @@ importers:
             web-vitals: ^2.1.4
         dependencies:
             '@ant-design/icons': 5.0.1_biqbaboplfbrettd7655fr4n2y
+            '@auth0/auth0-react': 2.0.1_biqbaboplfbrettd7655fr4n2y
             '@reduxjs/toolkit': 1.9.2_k4ae6lp43ej6mezo3ztvx6pykq
             '@testing-library/jest-dom': 5.16.5
             '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
@@ -310,6 +312,27 @@ packages:
             json-schema: 0.4.0
             jsonpointer: 5.0.1
             leven: 3.1.0
+        dev: false
+
+    /@auth0/auth0-react/2.0.1_biqbaboplfbrettd7655fr4n2y:
+        resolution:
+            {
+                integrity: sha512-7Rla3del7inUloaWMsECs0JvBpDEj9lgfy+BQE/Z75zs9tveNvxab+xFdfrBC0GPN0eoiq1PeHcc++YjLnti+g==,
+            }
+        peerDependencies:
+            react: ^16.11.0 || ^17 || ^18
+            react-dom: ^16.11.0 || ^17 || ^18
+        dependencies:
+            '@auth0/auth0-spa-js': 2.0.4
+            react: 18.2.0
+            react-dom: 18.2.0_react@18.2.0
+        dev: false
+
+    /@auth0/auth0-spa-js/2.0.4:
+        resolution:
+            {
+                integrity: sha512-NgD6Fkm5Xnbned1VjhEW8irm1/Y8AWtdSLexgLXNwwBVgfnYicCVBu8w75m2t+4QljXkTcI7IXVEFhVmxMuxaA==,
+            }
         dev: false
 
     /@aws-cdk/aws-apigatewayv2-alpha/2.50.0-alpha.0_26lsmf53vis4u7wqpp7tegtrjq:

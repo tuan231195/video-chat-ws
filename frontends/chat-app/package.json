@@ -17,6 +17,7 @@
 		"watch": "rm -rf dist && swc --config-file ../../.swcrc ./src -d dist -w"
 	},
 	"dependencies": {
+		"@auth0/auth0-react": "^2.0.1",
 		"@ant-design/icons": "^5.0.1",
 		"@reduxjs/toolkit": "^1.9.2",
 		"@testing-library/jest-dom": "^5.16.5",
