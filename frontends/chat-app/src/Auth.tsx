@@ -7,14 +7,15 @@ import { Main } from './Main';
 
 function Auth() {
 	const [loading, setLoading] = useState(true);
-	const { getIdTokenClaims } = useAuth0();
+	const { getIdTokenClaims, getAccessTokenSilently } = useAuth0();
 	const user = useUser();
 	useEffect(() => {
 		(async () => {
+			await getAccessTokenSilently();
 			const token = await getIdTokenClaims();
 			// eslint-disable-next-line no-underscore-dangle
 			socketService.connect(token!.__raw);
-			setLoading(true);
+			setLoading(false);
 		})();
 	}, []);
 

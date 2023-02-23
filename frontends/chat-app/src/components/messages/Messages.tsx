@@ -1,16 +1,17 @@
-import { Avatar, Empty, Input, Layout, Modal, Space, Spin, theme, Typography } from 'antd';
+import { Avatar, Empty, Input, Layout, Modal, notification, Space, Spin, theme, Typography } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/store/store';
 import { CenterSpin } from 'src/components/common/CenterSpin';
 import { generateAvatar } from 'src/lib/common/avatar';
 import { timeAgo } from 'src/lib/common/date';
-import { LogoutOutlined, SendOutlined, VideoCameraTwoTone } from '@ant-design/icons';
+import { CopyTwoTone, LogoutOutlined, SendOutlined, VideoCameraTwoTone } from '@ant-design/icons';
 import { loadMoreMessages, sendMessage } from 'src/store/actions/message';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useSelectedGroup } from 'src/store/selectors/group';
 import { VideoCallModal } from 'src/components/messages/VideoCallModal';
 import { leaveGroup } from 'src/store/actions/group';
 import { useUser } from 'src/context/session';
+import copy from 'copy-to-clipboard';
 import styles from './Messages.module.css';
 
 const { Title, Text } = Typography;
@@ -60,6 +61,13 @@ export const Messages = () => {
 		setShowVideoModal(true);
 	};
 
+	const onCopyGroupId = async () => {
+		copy(selectedGroupId ?? '');
+		notification.success({
+			message: 'Copied group ID to clipboard!',
+		});
+	};
+
 	const onLeave = async () => {
 		if (selectedGroupId) {
 			Modal.confirm({
@@ -104,10 +112,7 @@ export const Messages = () => {
 									className={`${styles['message-item']} ${
 										isCurrentUser ? styles['message-item--current'] : ''
 									}`}>
-									<Avatar
-										className={styles['message-item-avatar']}
-										src={generateAvatar(item.userId)}
-									/>
+									<Avatar className={styles['message-item-avatar']} src={item.user.avatar} />
 									<div className={styles['message-item-text']}>
 										<Space direction={'vertical'} size={2}>
 											<Text strong>{item.user.name}</Text>
@@ -153,6 +158,11 @@ export const Messages = () => {
 					</Title>
 				</Space>
 				<Space direction={'horizontal'} size={20} align={'center'}>
+					<CopyTwoTone
+						twoToneColor={colorPrimary}
+						style={{ fontSize: 24, cursor: 'pointer' }}
+						onClick={onCopyGroupId}
+					/>
 					<VideoCameraTwoTone
 						twoToneColor={colorPrimary}
 						style={{ fontSize: 24, cursor: 'pointer' }}

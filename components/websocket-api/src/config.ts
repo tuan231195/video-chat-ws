@@ -67,7 +67,7 @@ export const config = async () => {
 				nullable: false,
 				default: null,
 			},
-			JWT_SECRET: {
+			JWKS_ENDPOINT: {
 				format: String,
 				nullable: false,
 				default: null,

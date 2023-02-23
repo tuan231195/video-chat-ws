@@ -47,7 +47,9 @@ export function IndexStack({ stack }: StackContext) {
 		value: videoCallUserTable.tableName,
 	});
 
-	const jwtSecret = new Config.Secret(stack, 'JWT_SECRET');
+	const jwksConfig = new Config.Parameter(stack, 'JWKS_ENDPOINT', {
+		value: process.env.JWKS_ENDPOINT!,
+	});
 
 	const bindingConstructs = [
 		connectionsTableConfig,
@@ -64,7 +66,7 @@ export function IndexStack({ stack }: StackContext) {
 		videoCallUserTable,
 		videoCallTableConfig,
 		videoCallUsersTableConfig,
-		jwtSecret,
+		jwksConfig,
 	];
 
 	const authorizerFunction = new Function(stack, 'authorizer', {

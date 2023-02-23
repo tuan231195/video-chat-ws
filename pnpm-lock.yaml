@@ -100,6 +100,7 @@ importers:
             dotenv-flow: ^3.2.0
             json5: ^2.2.3
             jsonwebtoken: ^9.0.0
+            jwks-rsa: ^3.0.1
             lodash: ^4.17.21
             nanoid: ^4.0.0
             reflect-metadata: ^0.1.13
@@ -119,6 +120,7 @@ importers:
             dotenv-flow: 3.2.0
             json5: 2.2.3
             jsonwebtoken: 9.0.0
+            jwks-rsa: 3.0.1
             lodash: 4.17.21
             nanoid: 4.0.0
             reflect-metadata: 0.1.13
@@ -7686,7 +7688,6 @@ packages:
             }
         dependencies:
             '@types/node': 18.7.6
-        dev: true
 
     /@types/keyv/3.1.4:
         resolution:
@@ -7948,7 +7949,7 @@ packages:
             functional-red-black-tree: 1.0.1
             ignore: 5.2.0
             regexpp: 3.2.0
-            semver: 7.3.7
+            semver: 7.3.8
             tsutils: 3.21.0_typescript@4.9.4
             typescript: 4.9.4
         transitivePeerDependencies:
@@ -7978,7 +7979,7 @@ packages:
             functional-red-black-tree: 1.0.1
             ignore: 5.2.0
             regexpp: 3.2.0
-            semver: 7.3.7
+            semver: 7.3.8
             tsutils: 3.21.0_typescript@4.7.4
             typescript: 4.7.4
         transitivePeerDependencies:
@@ -17577,6 +17578,23 @@ packages:
             safe-buffer: 5.2.1
         dev: false
 
+    /jwks-rsa/3.0.1:
+        resolution:
+            {
+                integrity: sha512-UUOZ0CVReK1QVU3rbi9bC7N5/le8ziUj0A2ef1Q0M7OPD2KvjEYizptqIxGIo6fSLYDkqBrazILS18tYuRc8gw==,
+            }
+        engines: { node: '>=14' }
+        dependencies:
+            '@types/express': 4.17.16
+            '@types/jsonwebtoken': 9.0.1
+            debug: 4.3.4
+            jose: 4.11.2
+            limiter: 1.1.5
+            lru-memoizer: 2.2.0
+        transitivePeerDependencies:
+            - supports-color
+        dev: false
+
     /jws/3.2.2:
         resolution:
             {
@@ -17755,6 +17773,13 @@ packages:
                 integrity: sha512-9JROoBW7pobfsx+Sq2JsASvCo6Pfo6WWoUW79HuB1BCoBXD4PLWJPqDF6fNj67pqBYTbAHkE57M1kS/+L1neOg==,
             }
         engines: { node: '>=10' }
+        dev: false
+
+    /limiter/1.1.5:
+        resolution:
+            {
+                integrity: sha512-FWWMIEOxz3GwUI4Ts/IvgVy6LPvoMPgjMdQ185nN6psJyBJ4yOpzqm695/h5umdLJg2vW3GR5iG11MAkR2AzJA==,
+            }
         dev: false
 
     /lines-and-columns/1.2.4:
@@ -18091,6 +18116,16 @@ packages:
         engines: { node: ^12.20.0 || ^14.13.1 || >=16.0.0 }
         dev: true
 
+    /lru-cache/4.0.2:
+        resolution:
+            {
+                integrity: sha512-uQw9OqphAGiZhkuPlpFGmdTU2tEuhxTourM/19qGJrxBPHAr/f8BT1a0i/lOclESnGatdJG/UCkP9kZB/Lh1iw==,
+            }
+        dependencies:
+            pseudomap: 1.0.2
+            yallist: 2.1.2
+        dev: false
+
     /lru-cache/5.1.1:
         resolution:
             {
@@ -18108,6 +18143,16 @@ packages:
         engines: { node: '>=10' }
         dependencies:
             yallist: 4.0.0
+
+    /lru-memoizer/2.2.0:
+        resolution:
+            {
+                integrity: sha512-QfOZ6jNkxCcM/BkIPnFsqDhtrazLRsghi9mBwFAzol5GCvj4EkFT899Za3+QwikCg5sRX8JstioBDwOxEyzaNw==,
+            }
+        dependencies:
+            lodash.clonedeep: 4.5.0
+            lru-cache: 4.0.2
+        dev: false
 
     /lz-string/1.4.4:
         resolution:
@@ -21057,6 +21102,13 @@ packages:
             }
         dev: true
 
+    /pseudomap/1.0.2:
+        resolution:
+            {
+                integrity: sha512-b/YwNhb8lk1Zz2+bXXpS/LK9OisiZZ1SNsSLxN1x2OXVEhW2Ckr/7mWE5vrC1ZTiJlD9g19jWszTmJsB+oEpFQ==,
+            }
+        dev: false
+
     /psl/1.9.0:
         resolution:
             {
@@ -23079,6 +23131,7 @@ packages:
         hasBin: true
         dependencies:
             lru-cache: 6.0.0
+        dev: true
 
     /semver/7.3.8:
         resolution:
@@ -26058,6 +26111,13 @@ packages:
                 integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==,
             }
         engines: { node: '>=10' }
+
+    /yallist/2.1.2:
+        resolution:
+            {
+                integrity: sha512-ncTzHV7NvsQZkYe1DW7cbDLm0YpzHmZF5r/iyP3ZnQtMiJ+pjzisCiMNI+Sj+xQF5pXhSHxSB3uDbsBTzY/c2A==,
+            }
+        dev: false
 
     /yallist/3.1.1:
         resolution:

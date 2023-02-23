@@ -13,7 +13,7 @@ export interface State {
 
 const initialState: State = {
 	groupId: null,
-	loading: true,
+	loading: false,
 	fetching: false,
 	items: [],
 	lastKey: null,
