@@ -58,8 +58,10 @@ export const leaveGroup = createAppAsyncThunk(
 		const {
 			groups: { items },
 		} = getState();
-		if (items.length) {
-			dispatch(selectGroup(items[0]));
+
+		const otherGroups = items.filter((item) => item.groupId !== groupId);
+		if (otherGroups.length) {
+			dispatch(selectGroup(otherGroups[0]));
 		}
 		return groupId;
 	}

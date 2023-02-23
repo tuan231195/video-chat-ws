@@ -1,5 +1,5 @@
 import { Avatar, Layout, List, Space, Typography } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/store/store';
 import { UserGroup } from 'src/types/group';
 import { selectGroup } from 'src/store/actions/group';
@@ -7,9 +7,11 @@ import { CenterSpin } from 'src/components/common/CenterSpin';
 import { generateAvatar } from 'src/lib/common/avatar';
 import classnames from 'classnames';
 import { timeAgo } from 'src/lib/common/date';
-import { LoginOutlined, UsergroupAddOutlined } from '@ant-design/icons';
+import { EnterOutlined, LogoutOutlined, UsergroupAddOutlined } from '@ant-design/icons';
 import { GroupAddModal } from 'src/components/groups/GroupAddModal';
 import { GroupJoinModal } from 'src/components/groups/GroupJoinModal';
+import { useForceUpdate } from 'src/lib/common/hooks';
+import { useAuth0 } from '@auth0/auth0-react';
 import styles from './GroupList.module.css';
 
 const { Text, Title } = Typography;
@@ -17,10 +19,18 @@ const { Text, Title } = Typography;
 const { Header: AppHeader } = Layout;
 
 export const GroupList = () => {
+	const { logout } = useAuth0();
 	const { loading, items, selectedGroupId } = useAppSelector((store) => store.groups);
 	const [isShowingCreateGroupModal, setShowingCreateGroupModal] = useState(false);
 	const [isShowingJoinGroupModal, setShowingJoinGroupModal] = useState(false);
 	const dispatch = useAppDispatch();
+	const update = useForceUpdate();
+	useEffect(() => {
+		const interval = setInterval(update, 60 * 1000);
+		return () => {
+			clearInterval(interval);
+		};
+	}, []);
 	if (loading) {
 		return <CenterSpin size="large" />;
 	}
@@ -35,6 +45,14 @@ export const GroupList = () => {
 		setShowingJoinGroupModal(true);
 	};
 
+	const onLogout = () => {
+		logout({
+			logoutParams: {
+				returnTo: window.location.origin,
+			},
+		});
+	};
+
 	return (
 		<>
 			<AppHeader className={styles['group-controls-header']}>
@@ -43,7 +61,8 @@ export const GroupList = () => {
 				</Title>
 				<Space direction={'horizontal'} size={10} align={'end'}>
 					<UsergroupAddOutlined style={{ fontSize: 24 }} onClick={onShowGroupModal} />
-					<LoginOutlined style={{ fontSize: 24 }} onClick={onJoinGroup} />
+					<EnterOutlined style={{ fontSize: 24 }} onClick={onJoinGroup} />
+					<LogoutOutlined style={{ fontSize: 24 }} onClick={onLogout} />
 				</Space>
 			</AppHeader>
 			{isShowingCreateGroupModal && <GroupAddModal onClose={() => setShowingCreateGroupModal(false)} />}
@@ -82,7 +101,7 @@ export const GroupList = () => {
 							/>
 							{!!item.group.lastMessage && (
 								<div className={styles['group-item-time']}>
-									{timeAgo(item.group.lastMessage.createdAt, 'mini')}{' '}
+									{timeAgo(item.group.lastMessage.createdAt, 'mini-minute-now')}{' '}
 								</div>
 							)}
 						</List.Item>
