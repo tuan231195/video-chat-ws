@@ -34,7 +34,7 @@ export class SocketService {
 	}
 
 	private getNewWebSocket(token: string) {
-		return webSocket(`${process.env.REACT_APP_WEBSOCKET_API_URL}?authorization=${token}`);
+		return webSocket(`${import.meta.env.VITE_WEBSOCKET_API_URL}?authorization=${token}`);
 	}
 
 	sendMessage(msg: Message) {
