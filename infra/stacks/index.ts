@@ -1,6 +1,7 @@
 import { App } from '@serverless-stack/resources';
 import { IndexStack } from './index.stack';
 import { IndexStack as WebsocketApiStack } from './websocket-api/index.stack';
+import { IndexStack as ChatAppStack } from './chat-app/index.stack';
 
 export default function bootstrap(app: App) {
 	app.setDefaultFunctionProps({
@@ -33,7 +34,11 @@ export default function bootstrap(app: App) {
 	});
 	app.stack(IndexStack, {
 		id: 'root-stack',
-	}).stack(WebsocketApiStack, {
-		id: 'websocket-api-stack',
-	});
+	})
+		.stack(WebsocketApiStack, {
+			id: 'websocket-api-stack',
+		})
+		.stack(ChatAppStack, {
+			id: 'chat-app-stack',
+		});
 }

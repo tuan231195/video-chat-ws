@@ -12,7 +12,8 @@
 		"tsc": "rm -rf dist && tsc",
 		"patch": "release-it -i patch --ci -VV",
 		"release": "release-it --ci -VV",
-		"plan-release": "release-it --ci --dry-run -VV"
+		"plan-release": "release-it --ci --dry-run -VV",
+		"start": "npm run watch"
 	},
 	"dependencies": {
 		"@aws-sdk/client-dynamodb": "^3.254.0",

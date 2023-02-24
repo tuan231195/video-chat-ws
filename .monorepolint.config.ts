@@ -64,9 +64,7 @@ module.exports = {
 						clean: 'rm -rf dist',
 						default: 'echo default',
 						lint: 'eslint . --max-warnings=0',
-						build: 'swc --config-file ../../.swcrc ./src -d dist',
 						test: 'jest --passWithNoTests',
-						tsc: 'rm -rf dist && tsc',
 						patch: 'release-it -i patch --ci -VV',
 						release: 'release-it --ci -VV',
 						'plan-release': 'release-it --ci --dry-run -VV',
@@ -77,18 +75,19 @@ module.exports = {
 			{
 				options: {
 					scripts: {
-						package: 'npm run prepare-workspace && npm run docker',
-						'prepare-workspace':
-							'pnpm-isolate-workspace . --src-less-disable --src-less-prod-disable --workspaces-exclude-glob=src --src-files-exclude-glob=src --src-files-enable',
-						docker: 'DOCKER_BUILDKIT=1 docker build -t ${npm_package_config_docker}:${npm_package_version} . && docker tag ${npm_package_config_docker}:${npm_package_version} ${npm_package_config_docker}:latest',
+						build: 'swc --config-file ../../.swcrc ./src -d dist',
+						tsc: 'rm -rf dist && tsc',
 					},
 				},
-				includePackages: getPackagesMatching('./components/*'),
+				includePackages: getPackagesMatching('./packages/*'),
 			},
 			{
 				options: {
 					scripts: {
 						'publish-package': 'pnpm publish --no-git-checks',
+						start: 'npm run watch',
+						build: 'swc --config-file ../../.swcrc ./src -d dist',
+						tsc: 'rm -rf dist && tsc',
 					},
 				},
 				includePackages: getPackagesMatching('./packages/*'),
