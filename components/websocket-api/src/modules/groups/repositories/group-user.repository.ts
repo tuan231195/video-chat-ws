@@ -1,5 +1,5 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { BaseRepository, DynamoDbService } from '@vdtn359/dynamodb';
+import { BaseRepository, DynamoDbService } from '@vdtn359/dynamodb-nestjs-module';
 import { CONFIG_TOKEN } from '@vdtn359/nestjs-bootstrap';
 import type { Config } from 'src/config';
 import { GroupUserEntity } from 'src/modules/groups/domains/entities';
